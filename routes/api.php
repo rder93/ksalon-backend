@@ -16,3 +16,15 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/check', 'AuthController@check')->middleware('cors');
+Route::resource('users', 'UsersController');
+Route::resource('categories', 'CategoryController');
+Route::resource('lounges', 'LoungeController');
+Route::resource('professionals', 'ProfessionalController');
+Route::resource('combos', 'ComboController');
+Route::resource('services', 'ServiceController');
+Route::resource('lounge.combos', 'ComboController');
+Route::resource('lounge.services', 'ServiceController');
+
+Route::resource('user.transaction', 'UsersController');
