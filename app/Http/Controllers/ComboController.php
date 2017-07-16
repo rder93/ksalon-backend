@@ -15,7 +15,7 @@ class ComboController extends Controller
     public function index()
     {
         $combos = Combo::all();
-        return response()->json($combos;
+        return response()->json($combos);
     }
 
     /**
@@ -109,7 +109,7 @@ class ComboController extends Controller
     {
         try {
             $input = ([
-                        'nombre' => $request['nombre']
+                        'nombre' => $request['nombre'],
                         'precio' => $request['precio']
                     ]);
 
