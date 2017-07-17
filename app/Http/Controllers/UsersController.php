@@ -22,7 +22,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::where('rol' , '!='  , 1)->get();
+        $users = User::where('rol' , '!='  , 0)->get();
         return response()->json($users);
     }
 
