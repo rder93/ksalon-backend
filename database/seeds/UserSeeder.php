@@ -14,17 +14,35 @@ class UserSeeder extends Seeder
     public function run()
     {
       $datos = [
-      	[
-					'name'     => 'Usuario cliente',
-					'email'    => 'cliente@email.com',
-					'password' => bcrypt('12345'),
-					'rol_id'   => 4
-				],
-        [
+          [
           'name'     => 'Usuario administrador',
           'email'    => 'admin@email.com',
           'password' => bcrypt('12345'),
           'rol_id'   => 0
+        ],
+        [
+          'name'     => 'Salones grandes',
+          'email'    => 'salongrande@email.com',
+          'password' => bcrypt('12345'),
+          'rol_id'   => 1
+        ],
+        [
+          'name'     => 'Salones pequeños',
+          'email'    => 'salonpequeño@email.com',
+          'password' => bcrypt('12345'),
+          'rol_id'   => 2
+        ],
+        [
+          'name'     => 'Profesional independiente',
+          'email'    => 'profesional@email.com',
+          'password' => bcrypt('12345'),
+          'rol_id'   => 3
+        ],
+        [
+          'name'     => 'Usuario cliente',
+          'email'    => 'cliente@email.com',
+          'password' => bcrypt('12345'),
+          'rol_id'   => 4
         ]
       ];
 
