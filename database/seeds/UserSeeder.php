@@ -18,8 +18,14 @@ class UserSeeder extends Seeder
 					'name'     => 'Usuario cliente',
 					'email'    => 'cliente@email.com',
 					'password' => bcrypt('12345'),
-					'rol_id'   => 5
-				]
+					'rol_id'   => 4
+				],
+        [
+          'name'     => 'Usuario administrador',
+          'email'    => 'admin@email.com',
+          'password' => bcrypt('12345'),
+          'rol_id'   => 0
+        ]
       ];
 
       foreach ($datos as $dato) {
