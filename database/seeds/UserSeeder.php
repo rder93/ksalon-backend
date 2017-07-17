@@ -15,10 +15,10 @@ class UserSeeder extends Seeder
     {
       $datos = [
       	[
-					'name'     => 'ejemplo prueba',
-					'email'    => 'email@email.com',
-					'password' => bcrypt('1024456'),
-					'rol_id'   => 4
+					'name'     => 'Usuario cliente',
+					'email'    => 'cliente@email.com',
+					'password' => bcrypt('12345'),
+					'rol_id'   => 5
 				]
       ];
 

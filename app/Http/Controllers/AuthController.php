@@ -21,7 +21,7 @@ class AuthController extends Controller
 		if (!$validator->fails()) {
 
 			if (Auth::attempt(['email' => $request->email, 'password' => $request->password  ])) {
-	            return response()->json(['status' => 'success', 'message' => 'Gracias por iniciar sesion.', 'auth_user' => Auth::user()]);
+	            return response()->json(['status' => 'success', 'message' => 'Gracias por iniciar sesion.', 'auth_user' => Auth::user(), 'rol' => Auth::user()->rol]);
 	        } else {
 	        	return response()->json(['status' => 'error', 'message' => 'Combinacion email / password incorrecta.']);
 	        }
