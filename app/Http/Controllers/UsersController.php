@@ -22,8 +22,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::where('rol' , '!='  , 0)->get();
-        return response()->json($users);
+        $users = User::where('rol_id' , '!='  , 0)->get();
+        return response()->json($users->toArray());
     }
 
     /**
