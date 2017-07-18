@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\LoungeUser;
+use App\Models\Ratings;
 use Illuminate\Http\Request;
 
-class LoungeUserController extends Controller
+class ScoreController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class LoungeUserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\LoungeUser  $loungeUser
+     * @param  \App\Models\Ratings  $ratings
      * @return \Illuminate\Http\Response
      */
-    public function show(LoungeUser $loungeUser)
+    public function show(Ratings $ratings)
     {
         //
     }
@@ -52,10 +52,10 @@ class LoungeUserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\LoungeUser  $loungeUser
+     * @param  \App\Models\Ratings  $ratings
      * @return \Illuminate\Http\Response
      */
-    public function edit(LoungeUser $loungeUser)
+    public function edit(Ratings $ratings)
     {
         //
     }
@@ -64,10 +64,10 @@ class LoungeUserController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\LoungeUser  $loungeUser
+     * @param  \App\Models\Ratings  $ratings
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LoungeUser $loungeUser)
+    public function update(Request $request, Ratings $ratings)
     {
         //
     }
@@ -75,10 +75,10 @@ class LoungeUserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\LoungeUser  $loungeUser
+     * @param  \App\Models\Ratings  $ratings
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LoungeUser $loungeUser)
+    public function destroy(Ratings $ratings)
     {
         //
     }

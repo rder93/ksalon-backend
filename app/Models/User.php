@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Lounge;
 use App\Models\Rol;
 use App\Models\Transaction;
 
@@ -14,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'id','name', 'email', 'password', 'rol_id'
+        'name', 'surname', 'username', 'email', 'password', 'rol_id'
     ];
 
     /**
@@ -25,6 +26,63 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function crear($request)
+    {
+        
+        $user = User::create(
+            $request->only(
+                'name',
+                'surname',
+                'username',
+                'email',
+                'rol_id'
+            )
+        );
+
+        $user = bcrypt($request->get('password'));
+
+        try{
+            DB::beginTransaction();
+            
+            switch ($request->get('rol')) {
+                case '1':
+                    
+                    break;
+                case '2':
+                    
+                    break;
+                case '3':
+                    
+                    break;
+                case '4':
+                    
+                    break;
+                default:
+                    
+                    break;
+            }
+
+
+
+            DB::commit();
+        } catch(Exception $e){
+            DB::rollback();
+            session()->flash('msg_danger', $e->getMessage());
+        };
+
+
+        if ($user->save()) {
+            return true;
+        }
+
+        return false;        
+    }
+
+    public function lounges()
+    {
+        return $this->hasMany(Lounge::class);
+    }
 
     public function rol(){
         return $this->belongsTo(Rol::class);
