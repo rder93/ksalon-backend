@@ -28,3 +28,5 @@ Route::resource('lounge.combos', 'ComboController');
 Route::resource('lounge.services', 'ServiceController');
 
 Route::resource('user.transaction', 'UsersController');
+
+Route::get('/rols', 'RolController@index');
