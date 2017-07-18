@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Ratings;
 use Illuminate\Http\Request;
 
-class RatingsController extends Controller
+class ScoreController extends Controller
 {
     /**
      * Display a listing of the resource.

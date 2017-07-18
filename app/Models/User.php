@@ -30,7 +30,7 @@ class User extends Authenticatable
     public function crear($request)
     {
         
-        $user = Cargo::new(
+        $user = User::create(
             $request->only(
                 'name',
                 'surname',
