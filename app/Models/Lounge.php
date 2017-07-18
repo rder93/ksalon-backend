@@ -5,14 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Category;
-use App\Models\Professional;
-use App\Models\Product;
 use App\Models\Combo;
+use App\Models\Product;
+use App\Models\Professional;
 use App\Models\Service;
+use App\Models\User;
 
 class Lounge extends Model
 {
 	protected $fillable = ['nombre', 'tipo', 'direccion'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class)
+    }
 
     public function category(){
     	return $this->belongsTo(Category::class);
