@@ -46,20 +46,33 @@ class UsersController extends Controller
     {
         $input    = $request->all();
         $name     = $request->name;
-        $surname  = $request->surname;
-        $username = $request->username;
+        // $surname  = $request->surname;
+        // $username = $request->username;
         $email    = $request->email;
         $password = $request->password;
-        $rol      = $request->rol;
+        $rol_id   = $request->rol_id;
+
+        // return response()->json([
+        //         'success' => true,
+        //         'msj'     => $request->all()
+        //     ]);
 
         $rules = [
             'name'     => 'required|alpha',
-            'surname'  => 'required|alpha',
-            'username' => 'required|unique:users',
             'email'    => 'required|unique:users',
             'password' => 'required',
-            'rol'      => 'required',
+            'rol_id'      => 'required',
         ];
+
+
+        // $rules = [
+        //     'name'     => 'required|alpha',
+        //     'surname'  => 'required|alpha',
+        //     'username' => 'required|unique:users',
+        //     'email'    => 'required|unique:users',
+        //     'password' => 'required',
+        //     'rol'      => 'required',
+        // ];
 
         $messages = [
             'name.required'      => 'Ingresa tu nombre',
@@ -72,7 +85,7 @@ class UsersController extends Controller
             'email.unique'       => 'Ya existe una cuenta asociada a este email',
             'password.required'  => 'Ingresa tu contraseña',
             'password.confirmed' => 'Las contraseñas no coinciden',
-            'rol.required'       => 'Ingresa tu tipo de perfil',
+            'rol_id.required'       => 'Ingresa tu tipo de perfil',
         ];
 
         $valide = Validator::make($input , $rules , $messages);
@@ -86,11 +99,11 @@ class UsersController extends Controller
 
             $user = new User;
             $user->name = $name;
-            $user->surname = $surname;
-            $user->username = $username;
-            $user->email = $email;
+            // $user->surname = $surname;
+            // $user->username = $username;
+            $user->email    = $email;
             $user->password = $password;
-            $user->rol      = $rol;
+            $user->rol_id   = $rol_id;
             $user->status   = 1;
             if ($user->save()) {
                 return response()->json([
