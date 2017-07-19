@@ -18,6 +18,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/check', 'AuthController@check')->middleware('cors');
+
 Route::resource('users', 'UsersController');
 Route::resource('categories', 'CategoryController');
 Route::resource('lounges', 'LoungeController');
@@ -26,7 +27,7 @@ Route::resource('combos', 'ComboController');
 Route::resource('services', 'ServiceController');
 Route::resource('lounge.combos', 'ComboController');
 Route::resource('lounge.services', 'ServiceController');
-
 Route::resource('user.transaction', 'UsersController');
 
+Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 Route::get('/rols', 'RolController@index');

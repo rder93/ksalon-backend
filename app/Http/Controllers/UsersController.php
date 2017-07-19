@@ -46,6 +46,7 @@ class UsersController extends Controller
     {
         $input    = $request->all();
         $name     = $request->name;
+        $dni      = $request->dni;
         // $surname  = $request->surname;
         // $username = $request->username;
         $email    = $request->email;
@@ -102,6 +103,7 @@ class UsersController extends Controller
             // $user->surname = $surname;
             // $user->username = $username;
             $user->email    = $email;
+            $user->dni      = $dni;
             $user->password =  bcrypt($password);
             $user->rol_id   = $rol_id;
             $user->status   = 1;
@@ -231,65 +233,67 @@ class UsersController extends Controller
         $input = $request->all();
 
 
-        return response()->json([
-            'success' => false,
-            'response' => $input
-        ]);
+        // return response()->json([
+        //     'success' => false,
+        //     'response' => $input
+        // ]);
 
         $input          = $request->all();
         $user           = User::find($id);
         $name           = $request->name;
-        $surname        = $request->surname;
-        $username       = $request->username;
-        $avatar         = $request->avatar;
+        // $surname        = $request->surname;
+        // $username       = $request->username;
+        // $avatar         = $request->avatar;
         $email          = $request->email;
-        $comission      = $request->comission;
+        // $comission      = $request->comission;
         $dni            = $request->dni;
-        $driver_license = $request->driver_license;
-        $passport       = $request->passport;
-        $insure         = $request->insure;
-        $paypal         = $request->paypal;
-        $healt_insure   = $request->healt_insure;
-        $img_dni        = $request->img_dni;
-        $img_lic        = $request->img_lic;
-        $img_insure     = $request->img_insure;
-        $img_healt      = $request->img_healt;
-        $destiny        = base_path() . '/public/uploads';
-        $admin          = $request->admin;
+        // $driver_license = $request->driver_license;
+        // $passport       = $request->passport;
+        // $insure         = $request->insure;
+        // $paypal         = $request->paypal;
+        // $healt_insure   = $request->healt_insure;
+        // $img_dni        = $request->img_dni;
+        // $img_lic        = $request->img_lic;
+        // $img_insure     = $request->img_insure;
+        // $img_healt      = $request->img_healt;
+        // $destiny        = base_path() . '/public/uploads';
+        // $admin          = $request->admin;
         $status         = $request->status;
 
         $rules = [
             'name'           => 'required_without:admin|alpha',
-            'surname'        => 'required_without:admin|alpha',
-            'username'       => ['required_without:admin' , Rule::unique('users')->ignore($user->username)],
-            'email'          => ['required_without:admin' , Rule::unique('users')->ignore($user->email)],
-            'comission'      => 'numeric',
+            // 'surname'        => 'required_without:admin|alpha',
+            // 'username'       => ['required_without:admin' , Rule::unique('users')->ignore($user->username)],
+            'email'          => 'required|email',
+            'email'          => 'unique:users,email,'.$user->id,
+            // 'email'          => ['required_without:admin' , Rule::unique('users')->ignore($user->email)],
+            // 'comission'      => 'numeric',
             'dni'            => 'required_without:admin|numeric',
-            'driver_license' => 'required_without:client,admin|',
-            'insure'         => 'required_without:client,admin',
-            'paypal'         => 'required_without:admin|email',
-            'healt_insure'   => 'required_without:admin,renter',
+            // 'driver_license' => 'required_without:client,admin|',
+            // 'insure'         => 'required_without:client,admin',
+            // 'paypal'         => 'required_without:admin|email',
+            // 'healt_insure'   => 'required_without:admin,renter',
         ];
 
         $messages = [
             'name.required_without'           => 'Ingresa tu nombre',
             'name.alpha'                      => 'Tu nombre debe tener solo letras',
-            'surname.required_without'        => 'Ingresa tu apellido',
-            'surname.alpha'                   => 'Tu apellido debe tener solo letras',
-            'username.required_without'       => 'Ingresa tu nombre de usuario',
-            'username.unique'                 => 'Ya existe una cuenta asociada a este nombre de usuario',
-            'email.required_without'          => 'Ingresa tu email',
+            // 'surname.required_without'        => 'Ingresa tu apellido',
+            // 'surname.alpha'                   => 'Tu apellido debe tener solo letras',
+            // 'username.required_without'       => 'Ingresa tu nombre de usuario',
+            // 'username.unique'                 => 'Ya existe una cuenta asociada a este nombre de usuario',
+            'email.required'                  => 'Ingresa tu email',
             'email.unique'                    => 'Ya existe una cuenta asociada a este email',
             'email.email'                     => 'Tu email debe tener una estructura de email valida',
-            'comission.required_wit'          => 'Ingresa la comision a descontar a este usuario (En porcentaje)',
-            'comission.numeric'               => 'La comision a descontar debe tener solo numeros',
+            // 'comission.required_wit'          => 'Ingresa la comision a descontar a este usuario (En porcentaje)',
+            // 'comission.numeric'               => 'La comision a descontar debe tener solo numeros',
             'dni.required_without'            => 'Ingresa tu dni',
             'dni.numeric'                     => 'Tu dni debe tener solo numeros',
-            'driver_license.required_without' => 'Ingresa tu numero de licencia de conducir',
-            'insure.required_without'         => 'Ingresa el numero de tu seguro de auto',
-            'paypal.required_without'         => 'Ingresa tu cuenta paypal',
-            'paypal.email'                    => 'Tu cuenta paypal debe tener una estructura de email valida',
-            'healt_insure.required_without'   => 'Ingresa el numero de tu seguro medico',
+            // 'driver_license.required_without' => 'Ingresa tu numero de licencia de conducir',
+            // 'insure.required_without'         => 'Ingresa el numero de tu seguro de auto',
+            // 'paypal.required_without'         => 'Ingresa tu cuenta paypal',
+            // 'paypal.email'                    => 'Tu cuenta paypal debe tener una estructura de email valida',
+            // 'healt_insure.required_without'   => 'Ingresa el numero de tu seguro medico',
         ];
 
         $valide = Validator::make($input , $rules , $messages);
@@ -301,111 +305,111 @@ class UsersController extends Controller
             ]);
         }else{
 
-            if (isset($admin)) {
-                if ($comission != null || $comission != '') {
-                    $user->comission = $comission;
-                }
-                if ($status != null || $status != '') {
-                    $user->status = $status;
-                }
+            // if (isset($admin)) {
+            //     if ($comission != null || $comission != '') {
+            //         $user->comission = $comission;
+            //     }
+            //     if ($status != null || $status != '') {
+            //         $user->status = $status;
+            //     }
 
-                if ($user->save()) {
-                    return response()->json([
-                        'success'   => true,
-                        'msj'       => 'Perfil actualizado exitosamente',
-                        'user_data' => $user
-                    ]);
-                }else{
-                    return response()->json([
-                        'success'   => true,
-                        'msj'       => 'Error al actualizar'
-                    ]);
-                }
-            }else{
+            //     if ($user->save()) {
+            //         return response()->json([
+            //             'success'   => true,
+            //             'msj'       => 'Perfil actualizado exitosamente',
+            //             'user_data' => $user
+            //         ]);
+            //     }else{
+            //         return response()->json([
+            //             'success'   => true,
+            //             'msj'       => 'Error al actualizar'
+            //         ]);
+            //     }
+            // }else{
                 $user->name         = $name;
-                $user->surname      = $surname;
-                $user->username     = $username;
+                // $user->surname      = $surname;
+                // $user->username     = $username;
                 $user->email        = $email;
                 $user->dni          = $dni;
-                $user->paypal       = $paypal;
-                $user->healt_insure = $healt_insure;
-                if ($driver_license != null || $driver_license != '') {
-                    $user->driver_license = $driver_license;
-                }
-                if ($passport != null || $passport != '') {
-                    $user->passport = $passport;
-                }
-                if ($insure != null || $insure != '') {
-                    $user->insure = $insure;
-                }
-                if ($avatar != null) {
-                    $n_f = md5(rand(1000 , 9000)).'.'.$avatar->getClientOriginalExtension();
-                    if ($user->avatar != null || $user->avatar != '') {
-                        unlink($destiny.'/avatars/'.$user->avatar);
-                    }
-                    $avatar->move($destiny.'/avatars' , $n_f);
-                    $user->avatar = $avatar;
-                }
+                // $user->paypal       = $paypal;
+                // $user->healt_insure = $healt_insure;
+                // if ($driver_license != null || $driver_license != '') {
+                //     $user->driver_license = $driver_license;
+                // }
+                // if ($passport != null || $passport != '') {
+                //     $user->passport = $passport;
+                // }
+                // if ($insure != null || $insure != '') {
+                //     $user->insure = $insure;
+                // }
+                // if ($avatar != null) {
+                //     $n_f = md5(rand(1000 , 9000)).'.'.$avatar->getClientOriginalExtension();
+                //     if ($user->avatar != null || $user->avatar != '') {
+                //         unlink($destiny.'/avatars/'.$user->avatar);
+                //     }
+                //     $avatar->move($destiny.'/avatars' , $n_f);
+                //     $user->avatar = $avatar;
+                // }
 
-                if ($img_dni != null) {
-                    $n_f  = md5(rand(1000 , 9000)).'.'.$img_dni->getClientOriginalExtension();
-                    $prev = Image::where('user_id' , $user->id)->where('description' , 'dni')->first();
-                    if ($prev) {
-                        unlink($destiny.'/images/'.$prev->name);
-                        $prev->delete();
-                    }
-                    $img              = new Image;
-                    $img->user_id     = $user->id;
-                    $img->description = 'dni';
-                    if ($img->save()) {
-                        $img_dni->move($destiny.'/files' , $n_f);
-                    }
-                }
+                // if ($img_dni != null) {
+                //     $n_f  = md5(rand(1000 , 9000)).'.'.$img_dni->getClientOriginalExtension();
+                //     $prev = Image::where('user_id' , $user->id)->where('description' , 'dni')->first();
+                //     if ($prev) {
+                //         unlink($destiny.'/images/'.$prev->name);
+                //         $prev->delete();
+                //     }
+                //     $img              = new Image;
+                //     $img->user_id     = $user->id;
+                //     $img->description = 'dni';
+                //     if ($img->save()) {
+                //         $img_dni->move($destiny.'/files' , $n_f);
+                //     }
+                // }
 
-                if ($img_lic != null) {
-                    $n_f  = md5(rand(1000 , 9000)).'.'.$img_lic->getClientOriginalExtension();
-                    $prev = Image::where('user_id' , $user->id)->where('description' , 'driver')->first();
-                    if ($prev) {
-                        unlink($destiny.'/images/'.$prev->name);
-                        $prev->delete();
-                    }
-                    $img              = new Image;
-                    $img->user_id     = $user->id;
-                    $img->description = 'driver';
-                    if ($img->save()) {
-                        $img_lic->move($destiny.'/files' , $n_f);
-                    }
-                }
+                // if ($img_lic != null) {
+                //     $n_f  = md5(rand(1000 , 9000)).'.'.$img_lic->getClientOriginalExtension();
+                //     $prev = Image::where('user_id' , $user->id)->where('description' , 'driver')->first();
+                //     if ($prev) {
+                //         unlink($destiny.'/images/'.$prev->name);
+                //         $prev->delete();
+                //     }
+                //     $img              = new Image;
+                //     $img->user_id     = $user->id;
+                //     $img->description = 'driver';
+                //     if ($img->save()) {
+                //         $img_lic->move($destiny.'/files' , $n_f);
+                //     }
+                // }
 
-                if ($img_insure != null) {
-                    $n_f  = md5(rand(1000 , 9000)).'.'.$img_insure->getClientOriginalExtension();
-                    $prev = Image::where('user_id' , $user->id)->where('description' , 'insure')->first();
-                    if ($prev) {
-                        unlink($destiny.'/images/'.$prev->name);
-                        $prev->delete();
-                    }
-                    $img              = new Image;
-                    $img->user_id     = $user->id;
-                    $img->description = 'insure';
-                    if ($img->save()) {
-                        $img_insure->move($destiny.'/files' , $n_f);
-                    }
-                }
+                // if ($img_insure != null) {
+                //     $n_f  = md5(rand(1000 , 9000)).'.'.$img_insure->getClientOriginalExtension();
+                //     $prev = Image::where('user_id' , $user->id)->where('description' , 'insure')->first();
+                //     if ($prev) {
+                //         unlink($destiny.'/images/'.$prev->name);
+                //         $prev->delete();
+                //     }
+                //     $img              = new Image;
+                //     $img->user_id     = $user->id;
+                //     $img->description = 'insure';
+                //     if ($img->save()) {
+                //         $img_insure->move($destiny.'/files' , $n_f);
+                //     }
+                // }
 
-                if ($img_healt != null) {
-                    $n_f  = md5(rand(1000 , 9000)).'.'.$img_healt->getClientOriginalExtension();
-                    $prev = Image::where('user_id' , $user->id)->where('description' , 'healt')->first();
-                    if ($prev) {
-                        unlink($destiny.'/images/'.$prev->name);
-                        $prev->delete();
-                    }
-                    $img              = new Image;
-                    $img->user_id     = $user->id;
-                    $img->description = 'healt';
-                    if ($img->save()) {
-                        $img_healt->move($destiny.'/files' , $n_f);
-                    }
-                }
+                // if ($img_healt != null) {
+                //     $n_f  = md5(rand(1000 , 9000)).'.'.$img_healt->getClientOriginalExtension();
+                //     $prev = Image::where('user_id' , $user->id)->where('description' , 'healt')->first();
+                //     if ($prev) {
+                //         unlink($destiny.'/images/'.$prev->name);
+                //         $prev->delete();
+                //     }
+                //     $img              = new Image;
+                //     $img->user_id     = $user->id;
+                //     $img->description = 'healt';
+                //     if ($img->save()) {
+                //         $img_healt->move($destiny.'/files' , $n_f);
+                //     }
+                // }
 
                 if ($user->save()) {
                     return response()->json([
@@ -420,7 +424,7 @@ class UsersController extends Controller
                     ]);
                 }
             }
-        }
+        // }
     }
 
     /**
@@ -432,89 +436,89 @@ class UsersController extends Controller
     public function destroy($id)
     {
         $user          = User::find($id);
-        $images        = Image::where('user_id' , $id)->get();
-        $notifications = Notification::where('user_id' , $id)->orwhere('user_to_id' , $id)->get();
-        $ratings       = Rating::where('user_id' , $id)->orwhere('user_to_id' , $id)->get();
-        $cars          = Car::where('user_id' , $id)->get();
-        $tickets       = Ticket::where('user_id' , $id)->orwhere('user_to_id' , $id)->get();
+        // $images        = Image::where('user_id' , $id)->get();
+        // $notifications = Notification::where('user_id' , $id)->orwhere('user_to_id' , $id)->get();
+        // $ratings       = Rating::where('user_id' , $id)->orwhere('user_to_id' , $id)->get();
+        // $cars          = Car::where('user_id' , $id)->get();
+        // $tickets       = Ticket::where('user_id' , $id)->orwhere('user_to_id' , $id)->get();
 
-        if (count($images) > 0) {
-            foreach ($images as $i) {
-                unlink(base_path() . '/public/uploads/files/'.$i->name);
-                $i->delete();
-            }
-        }
+        // if (count($images) > 0) {
+        //     foreach ($images as $i) {
+        //         unlink(base_path() . '/public/uploads/files/'.$i->name);
+        //         $i->delete();
+        //     }
+        // }
 
-        if (count($notifications) > 0) {
-            foreach ($notifications as $n) {
-                $n->delete();
-            }
-        }
+        // if (count($notifications) > 0) {
+        //     foreach ($notifications as $n) {
+        //         $n->delete();
+        //     }
+        // }
 
-        if (count($ratings) > 0) {
-            foreach ($ratings as $r) {
-                $r->delete();
-            }
-        }
+        // if (count($ratings) > 0) {
+        //     foreach ($ratings as $r) {
+        //         $r->delete();
+        //     }
+        // }
 
-        if (count($cars) > 0) {
-            foreach ($cars as $c) {
-                $tr     = Transaction::where('car_id' , $c->id)->get();
-                $im     = Image::where('car_id' , $c->id)->get();
-                $tr_ra  = Transport_Rate::where('car_id' , $c->id)->get();
-                $dri_ra = Driver_Rate::where('car_id' , $c->id)->get();
-                $ren_ra = Renter_Rate::where('car_id' , $c->id)->get();
+        // if (count($cars) > 0) {
+        //     foreach ($cars as $c) {
+        //         $tr     = Transaction::where('car_id' , $c->id)->get();
+        //         $im     = Image::where('car_id' , $c->id)->get();
+        //         $tr_ra  = Transport_Rate::where('car_id' , $c->id)->get();
+        //         $dri_ra = Driver_Rate::where('car_id' , $c->id)->get();
+        //         $ren_ra = Renter_Rate::where('car_id' , $c->id)->get();
 
-                if (count($tr) > 0) {
-                    foreach ($tr as $t) {
-                        if ($t->buyer_id == $c->user_id) {
-                            $t->buyer_id = null;
-                        }else{
-                            $t->seller_id = null;
-                        }
-                        $t->save();
-                    }
-                }
+        //         if (count($tr) > 0) {
+        //             foreach ($tr as $t) {
+        //                 if ($t->buyer_id == $c->user_id) {
+        //                     $t->buyer_id = null;
+        //                 }else{
+        //                     $t->seller_id = null;
+        //                 }
+        //                 $t->save();
+        //             }
+        //         }
 
-                if (count($im) > 0) {
-                    foreach ($im as $i) {
-                        unlink(base_path() . '/public/uploads/files/'.$i->name);
-                        $i->delete();
-                    }
-                }
+        //         if (count($im) > 0) {
+        //             foreach ($im as $i) {
+        //                 unlink(base_path() . '/public/uploads/files/'.$i->name);
+        //                 $i->delete();
+        //             }
+        //         }
 
-                if (count($tr_ra) > 0) {
-                    foreach ($tr_ra as $t) {
-                        $t->delete();
-                    }
-                }
+        //         if (count($tr_ra) > 0) {
+        //             foreach ($tr_ra as $t) {
+        //                 $t->delete();
+        //             }
+        //         }
 
-                if (count($dri_ra) > 0) {
-                    foreach ($dri_ra as $d) {
-                        $d->delete();
-                    }
-                }
+        //         if (count($dri_ra) > 0) {
+        //             foreach ($dri_ra as $d) {
+        //                 $d->delete();
+        //             }
+        //         }
 
-                if (count($ren_ra) > 0) {
-                    foreach ($ren_ra as $r) {
-                        $r->delete();
-                    }
-                }
-            }
-        }
+        //         if (count($ren_ra) > 0) {
+        //             foreach ($ren_ra as $r) {
+        //                 $r->delete();
+        //             }
+        //         }
+        //     }
+        // }
 
-        if (count($tickets) > 0) {
-            foreach ($tickets as $t) {
-                $im = Image::where('ticket_id' , $t->id)->get();
-                if (count($im) > 0) {
-                    foreach ($im as $i) {
-                        unlink(base_path() . '/public/uploads/files/'.$i->name);
-                        $i->delete();
-                    }
-                }
-                $im->delete();
-            }
-        }
+        // if (count($tickets) > 0) {
+        //     foreach ($tickets as $t) {
+        //         $im = Image::where('ticket_id' , $t->id)->get();
+        //         if (count($im) > 0) {
+        //             foreach ($im as $i) {
+        //                 unlink(base_path() . '/public/uploads/files/'.$i->name);
+        //                 $i->delete();
+        //             }
+        //         }
+        //         $im->delete();
+        //     }
+        // }
 
         $user->delete();
 
