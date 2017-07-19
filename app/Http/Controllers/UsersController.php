@@ -102,7 +102,7 @@ class UsersController extends Controller
             // $user->surname = $surname;
             // $user->username = $username;
             $user->email    = $email;
-            $user->password = $password;
+            $user->password =  bcrypt($password);
             $user->rol_id   = $rol_id;
             $user->status   = 1;
             if ($user->save()) {
@@ -129,54 +129,11 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        $user               = User::find($id);
-        $my_cars            = Car::where('user_id' , $id)->get();
-        $my_images          = Image::where('user_id' , $id)->get();
-        $my_tickets         = Ticket::where('user_id' , $id)->get();
-        $tickets_to_me      = Ticket::where('user_to_id' , $id)->get();
-        $my_ratings         = Rating::where('user_id' , $id)->get();
-        $ratings_to_me      = Rating::where('user_to_id' , $id)->get();
-        $my_transactions    = [];
-
-        if (count($my_cars) > 0) {
-            foreach ($my_cars as $c) {
-                $tr     = Transaction::where('car_id' , $c->id)->get();
-                $im     = Image::where('car_id' , $c->id)->get();
-                $tr_ra  = Transport_Rate::where('car_id' , $c->id)->get();
-                $dri_ra = Driver_Rate::where('car_id' , $c->id)->get();
-                $ren_ra = Renter_Rate::where('car_id' , $c->id)->get();
-
-                if (count($tr) > 0) {
-                    $c->transactions = $tr;
-                }
-
-                if (count($im) > 0) {
-                    $c->images = $im;
-                }
-
-                // if (count($tr_ra) > 0) {
-                //     $c->transport_rates = $t;
-                // }
-
-                if (count($dri_ra) > 0) {
-                    $c->driver_rates = $dri_ra;
-                }
-
-                if (count($ren_ra) > 0) {
-                    $c->renter_rates = $ren_ra;
-                }
-            }
-        }
+        $user = User::find($id);
 
         if ($user) {
             return response()->json([
-                'user_data'          => $user,
-                'my_cars'            => $my_cars,
-                'my_images'          => $my_images,
-                'my_tickets'         => $my_tickets,
-                'tickets_to_me'      => $tickets_to_me,
-                'my_ratings'         => $my_ratings,
-                'ratings_to_me'      => $ratings_to_me,
+                'user_data'  => $user
             ]);
         }else{
 
