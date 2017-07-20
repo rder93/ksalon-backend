@@ -130,8 +130,11 @@ class ServiceController extends Controller
     public function destroy(Service $service)
     {
         $service->delete();
+        $services = Service::all();
+
         return response()->json(
                 [
+                    'services' => $services,
                     'mensaje'=>'Servicio eliminado correctamente',
                     'code' => 1
                 ]
