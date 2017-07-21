@@ -107,19 +107,32 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        $input = ([
-                    'nombre' => $request ['nombre']
-                ]);
+        try {
+            $input = ([
+                        'nombre' => $request->nombre
+                    ]);
 
-        $category->fill($input)->save();
+            if ($category->fill($input)->save()){
 
-        return response()->json(
+                $categories = Category::all();
+
+                return response()->json(
+                    [
+                        'mensaje'=>'Categoria actualizada correctamente',
+                        'categories' => $categories,
+                        'code' => 1
+                    ]
+                );
+            }
+        } catch (Exception $e) {
+            return response()->json(
                 [
-                    'mensaje'=>'Categoria actualizada correctamente',
-                    'category' => $category,
-                    'code' => 1
+                    'mensaje'=>'Error al actualizar la categoria.',
+                    'code' => 0
                 ]
             );
+        }
+
     }
 
     /**

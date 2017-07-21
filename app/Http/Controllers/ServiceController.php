@@ -51,10 +51,11 @@ class ServiceController extends Controller
                 )
             );
 
+            $services = Service::all();
             return response()->json(
                 [
                     'mensaje'=>'El servicio ha sido creado exitosamente.',
-                    'service' => $service,
+                    'services' => $services,
                     'code' => 1
                 ]
             );
@@ -106,19 +107,30 @@ class ServiceController extends Controller
      */
     public function update(Request $request, Service $service)
     {
-        $input = ([
-                    'nombre' => $request ['nombre']
-                ]);
+        try {
+            $input = ([
+                'nombre' => $request->nombre
+            ]);
 
-        $service->fill($input)->save();
-
-        return response()->json(
+            if ($service->fill($input)->save()){
+                $services = Service::all();
+                return response()->json(
+                    [
+                        'mensaje'=>'Servicio actualizado correctamente',
+                        'services' => $services,
+                        'code' => 1
+                    ]
+                );
+            }        
+        } catch (Exception $e) {
+            return response()->json(
                 [
-                    'mensaje'=>'Service actualizado correctamente',
-                    'service' => $service,
-                    'code' => 1
+                    'mensaje'=>'Error al actualizar el servicio.',
+                    'code' => 0,
+                    'error' => $e
                 ]
             );
+        }        
     }
 
     /**
