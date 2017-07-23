@@ -44,6 +44,7 @@ class LoungeController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         try{
             $lounge = Category::create(
                 $request->only(
@@ -78,8 +79,11 @@ class LoungeController extends Controller
      * @param  \App\Models\Lounge  $lounge
      * @return \Illuminate\Http\Response
      */
-    public function show(Lounge $lounge)
+    public function show($id)
     {
+        
+        $lounge= Lounge::where('user_id','=',$id)->firstOrFail();
+        
         return response()->json($lounge->toArray());
     }
 

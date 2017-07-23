@@ -17,8 +17,10 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->float('precio');
-            $table->integer('lounge_id');
+            $table->string('descripcion');
+            $table->integer('lounge_id')->unsigned();
             $table->timestamps();
+            $table->foreign('lounge_id')->references('id')->on('lounges');
         });
     }
 

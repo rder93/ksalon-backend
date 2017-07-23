@@ -28,6 +28,7 @@ Route::resource('services', 'ServiceController');
 Route::resource('lounge.combos', 'ComboController');
 Route::resource('lounge.services', 'ServiceController');
 Route::resource('user.transaction', 'UsersController');
+Route::resource('products', 'ProductsController');
 
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 Route::get('/rols', 'RolController@index');
