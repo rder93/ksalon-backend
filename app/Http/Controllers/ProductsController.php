@@ -90,9 +90,18 @@ class ProductsController extends Controller
      * @param  \App\Models\Products  $products
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Products $products)
+    public function update(Request $request, $id)
     {
-        //
+        $producto = Product::FindOrFail($id);
+        $input = $request->all();
+        $producto->fill($input)->save();
+        return response()->json(
+                [
+                    'msj'=>'El Producto ha sido actualizado exitosamente.',
+                    'producto' => $producto,
+                    'code' => 1
+                ]
+        );
     }
 
     /**
