@@ -13,11 +13,11 @@ use App\Models\User;
 
 class Lounge extends Model
 {
-	protected $fillable = ['nombre', 'tipo', 'direccion'];
+	protected $fillable = ['user_id','category_id'];
 
     public function user()
     {
-        return $this->belongsTo(User::class)
+        return $this->belongsTo(User::class);
     }
 
     public function category(){
