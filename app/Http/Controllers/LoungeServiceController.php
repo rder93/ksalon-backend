@@ -29,6 +29,7 @@ class LoungeServiceController extends Controller
         //
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -83,11 +84,18 @@ class LoungeServiceController extends Controller
      */
     public function edit($id)
     {
-        $lounge= LoungeService::where('lounge_id','=',$id)->firstOrFail();
-        
-        return response()->json($lounge->toArray());
+        $loungeService= LoungeService::where('lounge_id','=',$id)->firstOrFail();
+        $loungeService['nombre']=$loungeService->service->nombre;
+        return response()->json($loungeService->toArray());
     }
+    
 
+    public function verServicioProfesional($id)
+    {
+        $loungeService = LoungeService::FindOrFail($id);
+        $loungeService['nombre']=$loungeService->service->nombre;
+        return $loungeService;
+    }
     /**
      * Update the specified resource in storage.
      *

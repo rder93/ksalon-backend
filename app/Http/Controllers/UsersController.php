@@ -114,10 +114,9 @@ class UsersController extends Controller
 
             if ($user->save()) {
                 if($request['categoria']==1 || $request['categoria']==2){
-                    $user_id=User::all('id') -> last();
                     $categoria=$request['categoria'];
                     $lounge= new Lounge;
-                    $lounge->user_id=$user_id['id'];
+                    $lounge->user_id=$user->id;
                     $lounge->category_id=$categoria;
                     if ($lounge->save()) {
                         return response()->json([

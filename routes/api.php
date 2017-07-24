@@ -30,5 +30,7 @@ Route::resource('loungeServices', 'LoungeServiceController');
 Route::resource('user.transaction', 'UsersController');
 Route::resource('products', 'ProductsController');
 
+Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
+
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 Route::get('/rols', 'RolController@index');
