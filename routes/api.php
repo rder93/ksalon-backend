@@ -26,7 +26,7 @@ Route::resource('professionals', 'ProfessionalController');
 Route::resource('combos', 'ComboController');
 Route::resource('services', 'ServiceController');
 Route::resource('lounge.combos', 'ComboController');
-Route::resource('lounge.services', 'ServiceController');
+Route::resource('loungeServices', 'LoungeServiceController');
 Route::resource('user.transaction', 'UsersController');
 Route::resource('products', 'ProductsController');
 
