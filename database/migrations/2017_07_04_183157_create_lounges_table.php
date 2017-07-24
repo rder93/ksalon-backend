@@ -15,6 +15,8 @@ class CreateLoungesTable extends Migration
     {
         Schema::create('lounges', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('latitud');
+            $table->string('altitud');
             $table->integer('user_id')->unsigned();
             $table->integer('category_id')->unsigned();
             $table->timestamps();
