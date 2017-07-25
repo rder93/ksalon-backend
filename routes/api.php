@@ -30,4 +30,5 @@ Route::resource('lounge.services', 'ServiceController');
 Route::resource('user.transaction', 'UsersController');
 
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
+Route::post('/change_status/{id}', 'UsersController@change_status')->middleware('cors');
 Route::get('/rols', 'RolController@index');
