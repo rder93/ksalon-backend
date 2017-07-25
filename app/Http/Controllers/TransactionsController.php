@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Transactions;
 use Illuminate\Http\Request;
 
+use App\Models\User;
+use App\Models\Transaction;
+use App\Models\Score;
+
 class TransactionsController extends Controller
 {
     /**
@@ -12,14 +16,56 @@ class TransactionsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $user = User::find($request['user_id']);
+        $user = User::find($request->id);
 
-        if ($user) {
-            $user->transaction
+        if($user){
+            if($user->rol_id != 0){
+                // $transactions = Transaction::where('buyer_id',$id)->orWhere('seller_id',$id)->orderBy('created_at','DESC')->get();
+                if($user->rol_id==4)
+                    $transactions = Transactions::where('user_id',$user->id)->orderBy('created_at','DESC')->get();
+                else if($user->rol!=0 && $user->rol!=4)
+                    $transactions = Transactions::where('user_to_id',$user->id)->orderBy('created_at','DESC')->get();
+
+
+                $nonReview = 0;
+
+                foreach($transactions as $t){  
+
+                    $t->buyer = User::find($t->user_id);
+                    $t->seller = User::find($t->user_to_id);
+                    
+                    $t->review = Score::where('transaction_id',$t->id)->where('user_id',$user->id)->first();
+
+
+                    $rt = Score::where('transaction_id',$t->id)->where('user_id',$user->id)->get();
+                        if( count($rt) > 0)
+                            $t->reviews = $rt;
+                        else
+                            $nonReview = $nonReview + 1;         
+                }
+
+                return response()->json([
+                    'success' => true,
+                    'transactions' => $transactions,
+                    'nonReview'    => $nonReview
+                ]);
+
+            }else{
+                return response()->json([
+                    'success' => true,
+                    'msj'     => 'Para cuando sea admin'
+                ]);
+            }
+
+                
+        }else{
+            return response()->json([
+                'success' => false,
+                'msj'     => 'Usuario no encontrado'
+            ]);
         }
-        return response()->json(['code' => 1, 'transaction' => $calificaciones ]);
     }
 
     /**
@@ -49,9 +95,35 @@ class TransactionsController extends Controller
      * @param  \App\Models\Transactions  $transactions
      * @return \Illuminate\Http\Response
      */
-    public function show(Transactions $transactions)
+    public function show($id)
     {
-        //
+        
+        $t =Transactions::find($id);
+
+        if ($t) {
+            $t->seller = User::find($t->user_to_id);
+            $t->buyer  = User::find($t->user_id);
+
+            $t->review = Score::where('transaction_id',$t->id)->get();
+
+            $t->seller_review = Score::where('transaction_id',$t->id)->where('user_id',$t->user_to_id)->first();
+            $t->buyer_review  = Score::where('transaction_id',$t->id)->where('user_id',$t->user_id)->first();
+
+            if($t->seller_review)
+                $t->seller_review->user = User::find($t->user_to_id);
+            if($t->buyer_review)
+                $t->buyer_review->user = User::find($t->user_id);
+
+            return response()->json([
+                'success' => true,
+                't' => $t
+            ]);
+        }else{
+            return response()->json([
+                'success' => false,
+                'msj'     => 'Transaccion no encontrada'
+            ]);
+        }
     }
 
     /**

@@ -18,6 +18,8 @@ class CreateScoresTable extends Migration
             $table->string('comentario');
             $table->integer('puntaje');
             $table->integer('transaction_id');
+            $table->integer('user_id');
+            $table->integer('user_to_id');
             $table->timestamps();
         });
     }

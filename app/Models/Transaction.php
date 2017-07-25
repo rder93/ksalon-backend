@@ -8,7 +8,7 @@ use App\Models\Score;
 
 class Transactions extends Model
 {
-	protected $fillable = ['estado', 'user_id', 'combo_lounge_id'];
+	protected $fillable = ['monto', 'estado', 'user_id', 'user_to_id','combo_lounge_id'];
 
 	public function user()
 	{

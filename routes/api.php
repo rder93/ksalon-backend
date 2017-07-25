@@ -30,7 +30,10 @@ Route::resource('loungeServices', 'LoungeServiceController');
 Route::resource('user.transaction', 'UsersController');
 Route::resource('products', 'ProductsController');
 Route::resource('tickets', 'TicketsController');
+Route::resource('transactions','TransactionsController');
+Route::resource('scores','ScoreController');
 
+Route::get('/transaccion/{id}','TransactionsController@show');
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
 
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
