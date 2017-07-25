@@ -29,6 +29,7 @@ Route::resource('lounge.combos', 'ComboController');
 Route::resource('loungeServices', 'LoungeServiceController');
 Route::resource('user.transaction', 'UsersController');
 Route::resource('products', 'ProductsController');
+Route::resource('tickets', 'TicketsController');
 
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
 
