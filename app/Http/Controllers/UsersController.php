@@ -8,6 +8,8 @@ use App\Http\Requests;
 
 use App\Models\User;
 
+use App\Models\Lounge;
+
 use Validator;
 
 use Illuminate\Validation\Rule;
@@ -52,7 +54,9 @@ class UsersController extends Controller
         $email    = $request->email;
         $password = $request->password;
         $rol_id   = $request->rol_id;
-
+        if ($request['categoria']) {
+            $rol_id=$request['categoria']+1;
+        }
         // return response()->json([
         //         'success' => true,
         //         'msj'     => $request->all()
@@ -62,7 +66,7 @@ class UsersController extends Controller
             'name'     => 'required|alpha',
             'email'    => 'required|unique:users',
             'password' => 'required',
-            'rol_id'      => 'required',
+            
         ];
 
 
@@ -107,7 +111,24 @@ class UsersController extends Controller
             $user->password =  bcrypt($password);
             $user->rol_id   = $rol_id;
             $user->status   = 1;
+
             if ($user->save()) {
+                // if($request['categoria']==1 || $request['categoria']==2){
+                //     $categoria=$request['categoria'];
+                //     $lounge= new Lounge;
+                //     $lounge->user_id=$user->id;
+                //     $lounge->category_id=$categoria;
+                //     if ($lounge->save()) {
+                //         return response()->json([
+                //             'success' => true,
+                //             'msj'     => 'Registro exitoso',
+                //             'user_data' => $user,
+                //             'lounge' => $lounge,
+                //             'route' => 'register'
+                //             ]);
+                //     }
+                // }
+                
                 return response()->json([
                     'success' => true,
                     'msj'     => 'Registro exitoso',

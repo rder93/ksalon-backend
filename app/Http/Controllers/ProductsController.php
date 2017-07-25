@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Products;
+
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ProductsController extends Controller
 {
@@ -35,7 +36,27 @@ class ProductsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $lounge = Product::create(
+                $request->all()
+            );
+
+            return response()->json(
+                [
+                    'msj'=>'El Producto ha sido creado exitosamente.',
+                    'lounge' => $lounge,
+                    'code' => 1
+                ]
+            );
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'msj'=>'Error al crear el Producto.',
+                    'lounge' => $lounge,
+                    'code' => 0
+                ]
+            );
+        }
     }
 
     /**
@@ -44,9 +65,10 @@ class ProductsController extends Controller
      * @param  \App\Models\Products  $products
      * @return \Illuminate\Http\Response
      */
-    public function show(Products $products)
+    public function show($id)
     {
-        //
+        $products=Product::select('*')->where('lounge_id','=',$id)->get();
+        return response()->json($products->toArray());
     }
 
     /**
@@ -55,9 +77,10 @@ class ProductsController extends Controller
      * @param  \App\Models\Products  $products
      * @return \Illuminate\Http\Response
      */
-    public function edit(Products $products)
+    public function edit($id)
     {
-        //
+        $product=Product::findOrFail($id);
+        return response()->json($product->toArray());
     }
 
     /**
@@ -67,9 +90,18 @@ class ProductsController extends Controller
      * @param  \App\Models\Products  $products
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Products $products)
+    public function update(Request $request, $id)
     {
-        //
+        $producto = Product::FindOrFail($id);
+        $input = $request->all();
+        $producto->fill($input)->save();
+        return response()->json(
+                [
+                    'msj'=>'El Producto ha sido actualizado exitosamente.',
+                    'producto' => $producto,
+                    'code' => 1
+                ]
+        );
     }
 
     /**
@@ -78,8 +110,16 @@ class ProductsController extends Controller
      * @param  \App\Models\Products  $products
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Products $products)
+    public function destroy($id)
     {
-        //
+        $producto = Product::FindOrFail($id);
+        $producto->delete();
+        return response()->json(
+                [
+                    'msj'=>'El Producto ha sido eliminado exitosamente.',
+                    'producto' => $producto,
+                    'code' => 1
+                ]
+        );
     }
 }

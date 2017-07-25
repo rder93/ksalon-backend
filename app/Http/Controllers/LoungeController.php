@@ -45,13 +45,8 @@ class LoungeController extends Controller
     public function store(Request $request)
     {
         try{
-            $lounge = Category::create(
-                $request->only(
-                    'nombre',
-                    'tipo',
-                    'direccion',
-                    'category_id'
-                )
+            $lounge = Lounge::create(
+                $request->all()
             );
 
             return response()->json(
@@ -78,8 +73,11 @@ class LoungeController extends Controller
      * @param  \App\Models\Lounge  $lounge
      * @return \Illuminate\Http\Response
      */
-    public function show(Lounge $lounge)
+    public function show($id)
     {
+        
+        $lounge= Lounge::where('user_id','=',$id)->get();
+        
         return response()->json($lounge->toArray());
     }
 
@@ -107,24 +105,18 @@ class LoungeController extends Controller
      * @param  \App\Models\Lounge  $lounge
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Lounge $lounge)
+    public function update(Request $request, $id)
     {
-        $input = ([
-                    'nombre' => $request ['nombre'],
-                    'tipo' => $request ['tipo'],
-                    'direccion' => $request ['direccion'],
-                    'category_id' => $request ['category_id']
-                ]);
-
+        $lounge = Lounge::FindOrFail($id);
+        $input = $request->all();
         $lounge->fill($input)->save();
-
         return response()->json(
                 [
-                    'mensaje'=>'Salon actualizado correctamente',
+                    'msj'=>'El Salon ha sido actualizado exitosamente.',
                     'lounge' => $lounge,
                     'code' => 1
                 ]
-            );
+        );
     }
 
     /**
@@ -133,14 +125,16 @@ class LoungeController extends Controller
      * @param  \App\Models\Lounge  $lounge
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Lounge $lounge)
+    public function destroy($id)
     {
+        $lounge = Lounge::FindOrFail($id);
         $lounge->delete();
         return response()->json(
                 [
-                    'mensaje'=>'Salon eliminado correctamente',
+                    'msj'=>'El Salon ha sido eliminado exitosamente.',
+                    'salon' => $lounge,
                     'code' => 1
                 ]
-            );
+        );
     }
 }

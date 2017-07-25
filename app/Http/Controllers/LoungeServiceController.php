@@ -14,7 +14,9 @@ class LoungeServiceController extends Controller
      */
     public function index()
     {
-        //
+        $loungeServices=LoungeService::all();
+        return response()->json($loungeServices->toArray());
+
     }
 
     /**
@@ -27,6 +29,7 @@ class LoungeServiceController extends Controller
         //
     }
 
+
     /**
      * Store a newly created resource in storage.
      *
@@ -35,7 +38,27 @@ class LoungeServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $loungeService = LoungeService::create(
+                $request->all()
+            );
+
+            return response()->json(
+                [
+                    'msj'=>'El Servicio ha sido creado exitosamente.',
+                    'lounge' => $loungeService,
+                    'code' => 1
+                ]
+            );
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'msj'=>'Error al crear el Producto.',
+                    'lounge' => $loungeService,
+                    'code' => 0
+                ]
+            );
+        }
     }
 
     /**
@@ -44,9 +67,13 @@ class LoungeServiceController extends Controller
      * @param  \App\Models\LoungeService  $loungeService
      * @return \Illuminate\Http\Response
      */
-    public function show(LoungeService $loungeService)
+    public function show($id)
     {
-        //
+        $loungeServices= LoungeService::where('lounge_id','=',$id)->get();
+        foreach ($loungeServices as $loungeService) {
+            $loungeService['nombre']=$loungeService->service->nombre;
+        }
+        return response()->json($loungeServices->toArray());
     }
 
     /**
@@ -55,11 +82,20 @@ class LoungeServiceController extends Controller
      * @param  \App\Models\LoungeService  $loungeService
      * @return \Illuminate\Http\Response
      */
-    public function edit(LoungeService $loungeService)
+    public function edit($id)
     {
-        //
+        $loungeService= LoungeService::where('lounge_id','=',$id)->firstOrFail();
+        $loungeService['nombre']=$loungeService->service->nombre;
+        return response()->json($loungeService->toArray());
     }
+    
 
+    public function verServicioProfesional($id)
+    {
+        $loungeService = LoungeService::FindOrFail($id);
+        $loungeService['nombre']=$loungeService->service->nombre;
+        return $loungeService;
+    }
     /**
      * Update the specified resource in storage.
      *
@@ -67,9 +103,18 @@ class LoungeServiceController extends Controller
      * @param  \App\Models\LoungeService  $loungeService
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LoungeService $loungeService)
+    public function update(Request $request, $id)
     {
-        //
+        $loungeService = LoungeService::FindOrFail($id);
+        $input = $request->all();
+        $loungeService->fill($input)->save();
+        return response()->json(
+                [
+                    'msj'=>'El Producto ha sido actualizado exitosamente.',
+                    'servicio' => $loungeService,
+                    'code' => 1
+                ]
+        );
     }
 
     /**
@@ -78,8 +123,16 @@ class LoungeServiceController extends Controller
      * @param  \App\Models\LoungeService  $loungeService
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LoungeService $loungeService)
+    public function destroy($id)
     {
-        //
+        $loungeService = LoungeService::FindOrFail($id);
+        $loungeService->delete();
+        return response()->json(
+                [
+                    'msj'=>'El Servicio ha sido eliminado exitosamente.',
+                    'producto' => $loungeService,
+                    'code' => 1
+                ]
+        );
     }
 }

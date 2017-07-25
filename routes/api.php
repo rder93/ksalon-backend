@@ -26,8 +26,12 @@ Route::resource('professionals', 'ProfessionalController');
 Route::resource('combos', 'ComboController');
 Route::resource('services', 'ServiceController');
 Route::resource('lounge.combos', 'ComboController');
-Route::resource('lounge.services', 'ServiceController');
+Route::resource('loungeServices', 'LoungeServiceController');
 Route::resource('user.transaction', 'UsersController');
+Route::resource('products', 'ProductsController');
+Route::resource('tickets', 'TicketsController');
+
+Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
 
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 Route::post('/change_status/{id}', 'UsersController@change_status')->middleware('cors');

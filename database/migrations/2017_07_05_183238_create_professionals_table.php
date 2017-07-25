@@ -18,8 +18,6 @@ class CreateProfessionalsTable extends Migration
             $table->string('nombre');
             $table->string('foto');
             $table->string('direccion');
-
-            $table->integer('user_id');
             $table->integer('lounge_id');
             $table->timestamps();
         });

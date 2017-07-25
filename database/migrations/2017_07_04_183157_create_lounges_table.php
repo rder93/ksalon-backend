@@ -15,11 +15,13 @@ class CreateLoungesTable extends Migration
     {
         Schema::create('lounges', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('nombre');
-            $table->enum('tipo', ['grande', 'mediano', 'pequeño']);
-            $table->string('direccion');
-            $table->integer('category_id');
+            $table->string('latitud');
+            $table->string('altitud');
+            $table->integer('user_id')->unsigned();
+            $table->integer('category_id')->unsigned();
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
