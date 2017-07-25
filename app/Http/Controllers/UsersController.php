@@ -113,21 +113,21 @@ class UsersController extends Controller
             $user->status   = 1;
 
             if ($user->save()) {
-                if($request['categoria']==1 || $request['categoria']==2){
-                    $categoria=$request['categoria'];
-                    $lounge= new Lounge;
-                    $lounge->user_id=$user->id;
-                    $lounge->category_id=$categoria;
-                    if ($lounge->save()) {
-                        return response()->json([
-                            'success' => true,
-                            'msj'     => 'Registro exitoso',
-                            'user_data' => $user,
-                            'lounge' => $lounge,
-                            'route' => 'register'
-                            ]);
-                    }
-                }
+                // if($request['categoria']==1 || $request['categoria']==2){
+                //     $categoria=$request['categoria'];
+                //     $lounge= new Lounge;
+                //     $lounge->user_id=$user->id;
+                //     $lounge->category_id=$categoria;
+                //     if ($lounge->save()) {
+                //         return response()->json([
+                //             'success' => true,
+                //             'msj'     => 'Registro exitoso',
+                //             'user_data' => $user,
+                //             'lounge' => $lounge,
+                //             'route' => 'register'
+                //             ]);
+                //     }
+                // }
                 
                 return response()->json([
                     'success' => true,

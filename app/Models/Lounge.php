@@ -13,7 +13,7 @@ use App\Models\User;
 
 class Lounge extends Model
 {
-	protected $fillable = ['user_id','category_id'];
+	protected $fillable = ['latitud','altitud','user_id','category_id'];
 
     public function user()
     {
