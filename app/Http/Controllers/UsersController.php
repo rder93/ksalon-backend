@@ -46,6 +46,13 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
+        
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
+        }
+        
         $input    = $request->all();
         $name     = $request->name;
         $dni      = $request->dni;
@@ -111,6 +118,10 @@ class UsersController extends Controller
             $user->password =  bcrypt($password);
             $user->rol_id   = $rol_id;
             $user->status   = 1;
+            if ($request->file("foto")) {
+                $user->avatar= $nombre;
+            }
+
 
             if ($user->save()) {
                 // if($request['categoria']==1 || $request['categoria']==2){
