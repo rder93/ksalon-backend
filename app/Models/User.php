@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Independent;
 use App\Models\Lounge;
 use App\Models\Rol;
 use App\Models\Transaction;
@@ -77,6 +78,11 @@ class User extends Authenticatable
         }
 
         return false;        
+    }
+
+    public function independent()
+    {
+        return $this->hasOne(Independent::class);
     }
 
     public function lounges()

@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Models\IndepentService;
 use Illuminate\Http\Request;
+use App\Models\Independent;
+use App\Models\Service;
 
-class IndepentServiceController extends Controller
+class IndependentServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return Independent::find($request->independent_id)->services;
     }
 
     /**

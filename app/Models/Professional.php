@@ -6,6 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Professional extends Model
 {
-	protected $fillable = ['nombre', 'foto', 'direccion', 'user_id'];
+	protected $fillable = ['nombre', 'foto', 'direccion', 'lounge_id'];
     
 }
