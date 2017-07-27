@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateIndependentsTable extends Migration
+class CreateIndepentsServicesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateIndependentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('independents', function (Blueprint $table) {
+        Schema::create('indepents_services', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->integer('indepent_id');
+            $table->integer('service_id');
+            $table->double('precio');
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ class CreateIndependentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('independents');
+        Schema::dropIfExists('indepent_services');
     }
 }
