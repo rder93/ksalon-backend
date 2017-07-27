@@ -43,12 +43,9 @@ Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioP
 Route::get('servicios/', 'ProfessionalServiceController@index');
 Route::get('servicios/{id}', 'ProfessionalServiceController@show');
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
-<<<<<<< HEAD
+
 Route::post('/change_status/{id}', 'UsersController@change_status')->middleware('cors');
 Route::get('/rols', 'RolController@index');
-=======
-Route::get('/rols', 'RolController@index');
-
 // Route::resource('independent.services','IndependentServiceController');
 Route::get('/independent/{independent_id}/services','IndependentServiceController@index');
->>>>>>> origin/master
+
