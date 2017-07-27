@@ -16,8 +16,6 @@ class CreateIndependentsTable extends Migration
         Schema::create('independents', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('user_id');
-            $table->integer('cedula');
-            $table->integer('foto');
             $table->timestamps();
         });
     }

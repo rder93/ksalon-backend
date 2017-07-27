@@ -13,8 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('imagen_defecto', function(){
+	return response()->json(['path' => 'no_avatar.jpg']);
 });
 
 Route::post('/check', 'AuthController@check')->middleware('cors');
@@ -30,7 +35,10 @@ Route::resource('loungeServices', 'LoungeServiceController');
 Route::resource('user.transaction', 'UsersController');
 Route::resource('products', 'ProductsController');
 Route::resource('tickets', 'TicketsController');
+Route::resource('transactions','TransactionsController');
+Route::resource('scores','ScoreController');
 
+Route::get('/transaccion/{id}','TransactionsController@show');
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
 Route::get('servicios/', 'ProfessionalServiceController@index');
 Route::get('servicios/{id}', 'ProfessionalServiceController@show');
