@@ -29,6 +29,6 @@ class CreateIndependentsServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('indepent_services');
+        Schema::dropIfExists('independents_services');
     }
 }
