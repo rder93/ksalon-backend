@@ -32,7 +32,8 @@ Route::resource('products', 'ProductsController');
 Route::resource('tickets', 'TicketsController');
 
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
-
+Route::get('servicios/', 'ProfessionalServiceController@index');
+Route::get('servicios/{id}', 'ProfessionalServiceController@show');
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 Route::post('/change_status/{id}', 'UsersController@change_status')->middleware('cors');
 Route::get('/rols', 'RolController@index');

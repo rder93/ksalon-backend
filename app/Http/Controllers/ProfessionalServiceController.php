@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProfessionalService;
 use Illuminate\Http\Request;
+use App\Http\Controllers\DB;
 
 class ProfessionalServiceController extends Controller
 {
@@ -14,7 +15,8 @@ class ProfessionalServiceController extends Controller
      */
     public function index()
     {
-        //
+        $professional_services = ProfessionalService::all();
+        return response()->json($professional_services);
     }
 
     /**
@@ -44,9 +46,10 @@ class ProfessionalServiceController extends Controller
      * @param  \App\Models\ProfessionalService  $professionalService
      * @return \Illuminate\Http\Response
      */
-    public function show(ProfessionalService $professionalService)
+    public function show($id)
     {
-        //
+        $professional_services = ProfessionalService::where('professional_id', $id)->get();
+        return response()->json($professional_services->toArray());
     }
 
     /**
