@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Combo;
-use App\Models\Indepent;
+use App\Models\Independent;
 use App\Models\Lounge;
 use App\Models\Professional;
 
@@ -21,8 +21,8 @@ class Service extends Model
     	return $this->belongsToMany(Professional::class);
     }
 
-    public function indepents(){
-        return $this->belongsToMany(Indepent::class);
+    public function independents(){
+        return $this->belongsToMany(Independent::class, 'independents_services');
     }
 
     public function combos(){
