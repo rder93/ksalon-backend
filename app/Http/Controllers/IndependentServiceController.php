@@ -6,6 +6,7 @@ use App\Models\IndepentService;
 use Illuminate\Http\Request;
 use App\Models\Independent;
 use App\Models\Service;
+use App\Models\User;
 
 class IndependentServiceController extends Controller
 {
@@ -16,7 +17,7 @@ class IndependentServiceController extends Controller
      */
     public function index(Request $request)
     {
-        return Independent::find($request->independent_id)->services;
+        return User::find($request->user_id)->independent->services;
     }
 
     /**

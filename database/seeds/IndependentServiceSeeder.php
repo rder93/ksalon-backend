@@ -12,8 +12,6 @@ class IndependentServiceSeeder extends Seeder
      */
     public function run()
     {
-        // $independent = Independent::find(1);
-
      	$pivots  = [
                         [
             	            'independent_id' 	=> 1,
@@ -41,8 +39,6 @@ class IndependentServiceSeeder extends Seeder
                             'precio'            => 10000
                         ]
                     ];
-
-        // print_r($pivots);
 
         DB::table('independents_services')->insert($pivots);
     }
