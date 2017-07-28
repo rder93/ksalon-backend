@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\IndepentService;
+use App\Models\IndependentService;
 use Illuminate\Http\Request;
 use App\Models\Independent;
 use App\Models\Service;
@@ -15,9 +15,11 @@ class IndependentServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index($user_id)
     {
-        return User::find($request->user_id)->independent->services;
+        $services = IndependentService::where('independent_id', $user_id)->firstOrFail();
+        $services['independent_id'] = $services->independent->name;
+        return response()->json($services->toArray());
     }
 
     /**
