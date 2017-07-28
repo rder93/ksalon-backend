@@ -8,6 +8,9 @@ use App\Models\Independent;
 use App\Models\Service;
 use App\Models\User;
 
+use DB;
+
+
 class IndependentServiceController extends Controller
 {
     /**
@@ -17,7 +20,12 @@ class IndependentServiceController extends Controller
      */
     public function index(Request $request)
     {
-        return User::find($request->user_id)->independent->services;
+        $independent = User::find($request->user_id)->independent;
+        return DB::table('independents_services')
+                    ->join('services', 'independents_services.service_id', '=', 'services.id')
+                    ->select('independents_services.id', 'independents_services.precio', 'independents_services.service_id','services.nombre as service_nombre', 'independents_services.created_at', 'independents_services.updated_at')
+                    ->where('independents_services.independent_id', '=', $independent->id)
+                    ->get();
     }
 
     /**

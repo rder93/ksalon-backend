@@ -17,4 +17,8 @@ class Independent extends Model
     public function user(){
     	return $this->belongsTo(User::class);
     }
+
+    public function servicios(){
+    	return $this->hasMany(IndependentService::class);
+    }
 }

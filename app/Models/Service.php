@@ -25,6 +25,10 @@ class Service extends Model
         return $this->belongsToMany(Independent::class, 'independents_services');
     }
 
+    public function independientes(){
+        return $this->hasMany(IndependentService::class);
+    }
+
     public function combos(){
     	return $this->belongsToMany(Combo::class);
     }
