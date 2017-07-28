@@ -20,18 +20,15 @@ class IndependentServiceController extends Controller
      */
     public function index($user_id)
     {
-<<<<<<< HEAD
-        $services = IndependentService::where('independent_id', $user_id)->firstOrFail();
-        $services['independent_id'] = $services->independent->name;
+
+        $services = IndependentService::where('independent_id', $user_id)->get();
+        foreach ($services as $service ) {
+            $service['independent_id'] = $service->independent->name;
+            $service['service_id'] = $service->service->nombre;
+        }
+        
         return response()->json($services->toArray());
-=======
-        $independent = User::find($request->user_id)->independent;
-        return DB::table('independents_services')
-                    ->join('services', 'independents_services.service_id', '=', 'services.id')
-                    ->select('independents_services.id', 'independents_services.precio', 'independents_services.service_id','services.nombre as service_nombre', 'independents_services.created_at', 'independents_services.updated_at')
-                    ->where('independents_services.independent_id', '=', $independent->id)
-                    ->get();
->>>>>>> origin/master
+
     }
 
     /**
