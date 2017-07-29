@@ -10,9 +10,9 @@ use App\Models\Service;
 class IndependentService extends Model
 {
 	protected $table = 'independents_services';
-    protected $fillable = ['independent_id', 'service_id', 'precio'];
+    protected $fillable = ['user_id', 'service_id', 'precio'];
 
-    public function independent(){
+    public function user(){
     	return $this->belongsTo(User::class);
     }
 
