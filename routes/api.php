@@ -49,3 +49,4 @@ Route::get('/rols', 'RolController@index');
 // Route::resource('independent.services','IndependentServiceController');
 
 Route::get('/independent/{user_id}/services','IndependentServiceController@index');
+Route::put('/independent/{user_id}/services/','IndependentServiceController@update');
