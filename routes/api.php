@@ -37,9 +37,13 @@ Route::resource('products', 'ProductsController');
 Route::resource('tickets', 'TicketsController');
 Route::resource('transactions','TransactionsController');
 Route::resource('scores','ScoreController');
+Route::resource('professionalServices', 'ProfessionalServiceController');
+
 
 Route::get('/transaccion/{id}','TransactionsController@show');
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
+
+Route::post('updateProfessional','ProfessionalController@updateProfessional');
 
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 Route::get('/rols', 'RolController@index');

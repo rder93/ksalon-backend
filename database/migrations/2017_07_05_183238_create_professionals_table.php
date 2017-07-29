@@ -17,7 +17,7 @@ class CreateProfessionalsTable extends Migration
             $table->increments('id');
             $table->string('nombre');
             $table->string('foto');
-            $table->string('direccion');
+            $table->string('identificacion');
             $table->integer('lounge_id');
             $table->timestamps();
         });
