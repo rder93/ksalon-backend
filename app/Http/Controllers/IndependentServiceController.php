@@ -88,7 +88,7 @@ class IndependentServiceController extends Controller
             $independent_service->precio = $request->precio;
             
             if ($independent_service->save()) {
-                return $this->obtenerServicios($request->user_id);
+                return $this->obtenerServicios($independent_service->user_id);
             }
 
         } catch (Exception $e) {
@@ -106,7 +106,7 @@ class IndependentServiceController extends Controller
      */
     public function destroy(IndependentService $independentService)
     {
-        //
+        
     }
 
     private function obtenerServicios($user_id)
