@@ -220,7 +220,7 @@ class UsersController extends Controller
 
     public function change_status($id)
     {
-        $user           = User::find($id);
+        $user = User::find($id);
         
         if ($user->status == 1) {
             $status = 0;

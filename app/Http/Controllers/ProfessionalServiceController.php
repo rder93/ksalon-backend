@@ -14,7 +14,7 @@ class ProfessionalServiceController extends Controller
      */
     public function index()
     {
-        //
+        
     }
 
     /**
