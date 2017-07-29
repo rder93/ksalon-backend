@@ -15,6 +15,9 @@ class CreateComboDetalleLoungesTable extends Migration
     {
         Schema::create('combo_detalle_lounges', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('lounge_id');
+            $table->integer('service_id');
+            $table->double('precio');
             $table->timestamps();
         });
     }
