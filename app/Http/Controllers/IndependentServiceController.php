@@ -83,14 +83,19 @@ class IndependentServiceController extends Controller
     public function update(Request $request)
     {
 
+        try {
+            $independent_service = IndependentService::find($request->id);
+            $independent_service->precio = $request->precio;
+            
+            if ($independent_service->save()) {
+                return $this->obtenerServicios($request->user_id);
+            }
 
-        $services = IndependentService::where('independent_id', $user_id)->get();
-        foreach ($services as $service ) {
-            $service['independent_id'] = $service->independent->name;
-            $service['service_id'] = $service->service->nombre;
+        } catch (Exception $e) {
+            return response()->json(['error' => $e]);
         }
-        
-        return response()->json($services->toArray());
+
+        // return response()->json($this->obtenerServicios());
     }
 
     /**
@@ -102,6 +107,17 @@ class IndependentServiceController extends Controller
     public function destroy(IndependentService $independentService)
     {
         //
+    }
+
+    private function obtenerServicios($user_id)
+    {
+        $services = IndependentService::where('user_id', $user_id)->get();
+        foreach ($services as $service ) {
+            $service['user_id'] = $service->user->name;
+            $service['service_id'] = $service->service->nombre;
+        }
+        
+        return response()->json($services->toArray());
     }
 }
 

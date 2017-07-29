@@ -15,7 +15,7 @@ class CreateIndependentsServicesTable extends Migration
     {
         Schema::create('independents_services', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('independent_id');
+            $table->integer('user_id');
             $table->integer('service_id');
             $table->double('precio');
             $table->timestamps();

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Models\Independent;
 
 class IndependentServiceSeeder extends Seeder
 {
@@ -12,6 +11,34 @@ class IndependentServiceSeeder extends Seeder
      */
     public function run()
     {
+		$pivots  = [
+                        [
+            	            'user_id'		=> 4,
+                            'service_id'	=> 1,
+                            'precio'		=> 2000
+                        ],
+                        [
+            	            'user_id'		=> 4,
+                            'service_id'	=> 3,
+                            'precio'		=> 5000
+                        ],
+                        [
+            	            'user_id' 		=> 4,
+                            'service_id'	=> 5,
+                            'precio'		=> 10000
+                        ],
+                        [
+                            'user_id'		=> 5,
+                            'service_id'	=> 3,
+                            'precio'		=> 5000
+                        ],
+                        [
+                            'user_id'		=> 5,
+                            'service_id'	=> 2,
+                            'precio'		=> 10000
+                        ]
+                    ];
 
+        DB::table('independents_services')->insert($pivots);
     }
 }
