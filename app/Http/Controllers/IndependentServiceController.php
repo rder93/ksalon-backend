@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\IndependentService;
 use Illuminate\Http\Request;
-use App\Models\Independent;
 use App\Models\Service;
 use App\Models\User;
 
@@ -21,9 +20,9 @@ class IndependentServiceController extends Controller
     public function index($user_id)
     {
 
-        $services = IndependentService::where('independent_id', $user_id)->get();
+        $services = IndependentService::where('user_id', $user_id)->get();
         foreach ($services as $service ) {
-            $service['independent_id'] = $service->independent->name;
+            $service['user_id'] = $service->user->name;
             $service['service_id'] = $service->service->nombre;
         }
         
@@ -71,7 +70,7 @@ class IndependentServiceController extends Controller
      */
     public function edit(IndependentService $independentService)
     {
-        //
+        
     }
 
     /**

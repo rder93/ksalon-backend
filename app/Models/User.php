@@ -80,11 +80,6 @@ class User extends Authenticatable
         return false;        
     }
 
-    public function independent()
-    {
-        return $this->hasOne(Independent::class);
-    }
-
     public function lounges()
     {
         return $this->hasMany(Lounge::class);
