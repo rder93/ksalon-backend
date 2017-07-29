@@ -73,7 +73,7 @@ class ProfessionalController extends Controller
             return response()->json(
                 [
                     'msj'=>'Error al crear el profesional independiente.',
-                    'profesional' => $profesional,
+                    'profesional' => $professional,
                     'code' => 0
                 ]
             );

@@ -21,6 +21,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('imagen_defecto', function(){
 	return response()->json(['path' => 'no_avatar.jpg']);
 });
+Route::get('imagen_defecto2', function(){
+	return response()->json(['path' => 'no_photo.png']);
+});
+
 
 Route::post('/check', 'AuthController@check')->middleware('cors');
 
@@ -38,12 +42,15 @@ Route::resource('tickets', 'TicketsController');
 Route::resource('transactions','TransactionsController');
 Route::resource('scores','ScoreController');
 Route::resource('professionalServices', 'ProfessionalServiceController');
+Route::resource('certificates', 'CertificateController');
+
 
 
 Route::get('/transaccion/{id}','TransactionsController@show');
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
 
 Route::post('updateProfessional','ProfessionalController@updateProfessional');
+Route::post('updateCertificate','CertificateController@updateCertificate');
 
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 

@@ -16,8 +16,8 @@ class CreateCertificatesTable extends Migration
         Schema::create('certificates', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre');
-            $table->integer('professionals_id')->unsigned();
-            $table->string('foto')->nullable()->default('no_avatar.jpg');
+            $table->integer('professional_id')->unsigned();
+            $table->string('foto')->nullable()->default('no_photo.png');
             $table->timestamps();
         });
     }

@@ -7,7 +7,7 @@ use app\Models\professionals;
 
 class Certificate extends Model
 {
-    protected $fillable = ['nombre','professionals_id','foto'];
+    protected $fillable = ['nombre','professional_id','foto'];
     
 
     public function professionals()
