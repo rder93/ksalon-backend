@@ -6,6 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Professional extends Model
 {
-	protected $fillable = ['nombre', 'foto', 'direccion', 'lounge_id'];
+
+	protected $fillable = ['nombre', 'foto', 'identificacion', 'lounge_id'];
+
+	public function lounge()
+    {
+        return $this->belongsTo(lounge::class);
+    }
     
 }

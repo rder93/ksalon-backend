@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCombosServicesTable extends Migration
+class CreateCertificatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateCombosServicesTable extends Migration
      */
     public function up()
     {
-        Schema::create('combos_services', function (Blueprint $table) {
+        Schema::create('certificates', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('descripcion');
-            $table->integer('precio')->unsigned();
-            $table->integer('lounge_id')->unsigne();
+            $table->string('nombre');
+            $table->integer('professional_id')->unsigned();
+            $table->string('foto')->nullable()->default('no_photo.png');
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ class CreateCombosServicesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('combo_services');
+        Schema::dropIfExists('certificates');
     }
 }

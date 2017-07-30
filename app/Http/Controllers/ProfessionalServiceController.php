@@ -35,7 +35,27 @@ class ProfessionalServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try{
+            $professionalService = ProfessionalService::create(
+                $request->all()
+            );
+
+            return response()->json(
+                [
+                    'msj'=>'El Servicio ha sido creado exitosamente.',
+                    'professional' => $professionalService,
+                    'code' => 1
+                ]
+            );
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'msj'=>'Error al crear el Producto.',
+                    'professional' => $professionalService,
+                    'code' => 0
+                ]
+            );
+        }
     }
 
     /**
@@ -44,9 +64,13 @@ class ProfessionalServiceController extends Controller
      * @param  \App\Models\ProfessionalService  $professionalService
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show($id)
     {
-        
+        $professionalServices= ProfessionalService::where('professional_id','=',$id)->get();
+        foreach ($professionalServices as $professionalService) {
+            $professionalService['nombre']=$professionalService->service->nombre;
+        }
+        return response()->json($professionalServices->toArray());
     }
 
     /**
@@ -55,9 +79,11 @@ class ProfessionalServiceController extends Controller
      * @param  \App\Models\ProfessionalService  $professionalService
      * @return \Illuminate\Http\Response
      */
-    public function edit(ProfessionalService $professionalService)
+    public function edit($id)
     {
-        //
+        $professionalService= ProfessionalService::findOrFail($id);
+        $professionalService['nombre']=$professionalService->service->nombre;
+        return response()->json($professionalService->toArray());
     }
 
     /**
@@ -67,9 +93,18 @@ class ProfessionalServiceController extends Controller
      * @param  \App\Models\ProfessionalService  $professionalService
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, ProfessionalService $professionalService)
+    public function update(Request $request,$id)
     {
-        //
+        $professionalService = ProfessionalService::FindOrFail($id);
+        $input = $request->all();
+        $professionalService->fill($input)->save();
+        return response()->json(
+                [
+                    'msj'=>'El Servicio ha sido actualizado exitosamente.',
+                    'servicio' => $professionalService,
+                    'code' => 1
+                ]
+        );
     }
 
     /**
@@ -78,8 +113,16 @@ class ProfessionalServiceController extends Controller
      * @param  \App\Models\ProfessionalService  $professionalService
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ProfessionalService $professionalService)
+    public function destroy($id)
     {
-        //
+        $professionalService = ProfessionalService::FindOrFail($id);
+        $professionalService->delete();
+        return response()->json(
+                [
+                    'msj'=>'El Servicio ha sido eliminado exitosamente.',
+                    'producto' => $professionalService,
+                    'code' => 1
+                ]
+        );
     }
 }

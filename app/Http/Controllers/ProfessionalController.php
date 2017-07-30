@@ -44,28 +44,36 @@ class ProfessionalController extends Controller
      */
     public function store(Request $request)
     {
+        $input= $request->all();
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
+        }else{
+            $nombre='no_avatar.jpg';
+        }
         try{
-            $professional = Professional::create(
-                $request->only(
-                    'nombre',
-                    'foto',
-                    'direccion',
-                    'user_id'
-                )
-            );
+            $professional = Professional::create([
+                'nombre' => $request['nombre'],
+                'foto'   => $nombre,
+                'identificacion' => $request['identificacion'],
+                'lounge_id' => $request['lounge_id']
+            ]);
+
+
 
             return response()->json(
                 [
-                    'mensaje'=>'El profesional ha sido creado exitosamente.',
-                    'profesional' => $profesional,
+                    'msj'=>'El profesional ha sido creado exitosamente.',
+                    'profesional' => $professional,
                     'code' => 1
                 ]
             );
         } catch (Exception $e) {
             return response()->json(
                 [
-                    'mensaje'=>'Error al crear el profesional independiente.',
-                    'profesional' => $profesional,
+                    'msj'=>'Error al crear el profesional independiente.',
+                    'profesional' => $professional,
                     'code' => 0
                 ]
             );
@@ -78,8 +86,9 @@ class ProfessionalController extends Controller
      * @param  \App\Models\Professional  $professional
      * @return \Illuminate\Http\Response
      */
-    public function show(Professional $professional)
+    public function show($id)
     {
+        $professional= Professional::all()->where('lounge_id', '=' , $id);
         return response()->json($professional->toArray());
     }
 
@@ -89,8 +98,9 @@ class ProfessionalController extends Controller
      * @param  \App\Models\Professional  $professional
      * @return \Illuminate\Http\Response
      */
-    public function edit(Professional $professional)
+    public function edit($id)
     {
+        $professional=Professional::findOrFail($id);
         return response()->json(
             [
                 "professional" => $professional,
@@ -107,24 +117,64 @@ class ProfessionalController extends Controller
      * @param  \App\Models\Professional  $professional
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Professional $professional)
+
+    public function updateProfessional(Request $request)
     {
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
+        }
+        else{
+            $nombre= $request['foto'];
+        }
+        $professional = Professional::FindOrFail($request['id']);
         $input = ([
-                    'nombre' => $request ['nombre'],
-                    'foto' => $request ['foto'],
-                    'direccion' => $request ['direccion'],
-                    'user_id' => $request ['user_id']
+                    'nombre' => $request['nombre'],
+                    'foto'   => $nombre,
+                    'identificacion' => $request['identificacion'],
+                    'lounge_id' => $request['lounge_id']
                 ]);
-
         $professional->fill($input)->save();
-
         return response()->json(
                 [
-                    'mensaje'=>'Prosional actualizado correctamente',
-                    'professional' => $professional,
+                    'msj'=>'El Profesional ha sido actualizado exitosamente.',
+                    'lounge' => $professional,
                     'code' => 1
                 ]
-            );
+        );
+
+    }
+
+    public function update(Request $request, $id)
+    {
+        $input= $request->all();
+        dd($input);
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            dd($nombre);
+            $request->file("foto")->move('imagenes',$nombre);
+        }
+        else{
+            dd('otra cosa');
+        }
+        // $input = ([
+        //             'nombre' => $request ['nombre'],
+        //             'foto' => $request ['foto'],
+        //             'direccion' => $request ['direccion'],
+        //             'user_id' => $request ['user_id']
+        //         ]);
+
+        // $professional->fill($input)->save();
+
+        // return response()->json(
+        //         [
+        //             'mensaje'=>'Prosional actualizado correctamente',
+        //             'professional' => $professional,
+        //             'code' => 1
+        //         ]
+        //     );
     }
 
     /**
@@ -133,8 +183,9 @@ class ProfessionalController extends Controller
      * @param  \App\Models\Professional  $professional
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Professional $professional)
+    public function destroy($id)
     {
+        $professional = Professional::FindOrFail($id);
         $professional->delete();
         return response()->json(
                 [
