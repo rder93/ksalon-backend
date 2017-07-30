@@ -17,15 +17,10 @@ class IndependentServiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($user_id)
+    public function index()
     {
 
-        $services = IndependentService::where('user_id', $user_id)->get();
-        foreach ($services as $service ) {
-            $service['user_id'] = $service->user->name;
-            $service['service_id'] = $service->service->nombre;
-        }
-        
+        $services = IndependentService::all();
         return response()->json($services->toArray());
 
     }
@@ -48,7 +43,34 @@ class IndependentServiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+        // $servicio = $request->id_service;
+
+
+        // return response()->json([
+        //     'success' => true,
+        //     'msj'     => 'Servicio creado',
+        //     'service_data' => $request->id_service
+        // ]);
+
+        $independent_service = new IndependentService;
+        $independent_service->user_id = $request->id_user;
+        $independent_service->service_id = $request->id_service['id'];
+        $independent_service->precio = $request->precio;
+
+
+        if ($independent_service->save()) {
+                return response()->json([
+                    'success' => true,
+                    'msj'     => 'Servicio creado exitosamente',
+                    'service_data' => $independent_service
+                ]);
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'msj'     => 'Error al crear servicio'
+                ]);
+            }
     }
 
     /**
@@ -57,9 +79,15 @@ class IndependentServiceController extends Controller
      * @param  \App\Models\IndepentService  $indepentService
      * @return \Illuminate\Http\Response
      */
-    public function show(IndependentService $independentService)
+    public function show($user_id)
     {
-        //
+        $services = IndependentService::where('user_id', $user_id)->get();
+        foreach ($services as $service ) {
+            $service['user_id'] = $service->user->name;
+            $service['service_id'] = $service->service->nombre;
+        }
+        
+        return response()->json($services->toArray());
     }
 
     /**
@@ -80,19 +108,24 @@ class IndependentServiceController extends Controller
      * @param  \App\Models\IndepentService  $indepentService
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
 
         try {
-            $independent_service = IndependentService::find($request->id);
+
+            $independent_service = IndependentService::find($id);
             $independent_service->precio = $request->precio;
             
             if ($independent_service->save()) {
-                return $this->obtenerServicios($independent_service->user_id);
+                return response()->json([
+                        'success'   => true,
+                        'msj'       => 'Servicio actualizado exitosamente',
+                        'user_data' => $independent_service
+                    ]);
             }
 
         } catch (Exception $e) {
-            return response()->json(['error' => $e]);
+            return response()->json(['msj' => $e]);
         }
 
         // return response()->json($this->obtenerServicios());
@@ -104,9 +137,15 @@ class IndependentServiceController extends Controller
      * @param  \App\Models\IndepentService  $indepentService
      * @return \Illuminate\Http\Response
      */
-    public function destroy(IndependentService $independentService)
+    public function destroy($id)
     {
-        
+        $independent_service = IndependentService::find($id);
+        $independent_service ->delete();
+
+        return response()->json([
+            'success' => true,
+            'msj'     => 'Servicio eliminado exitosamente'
+        ]);
     }
 
     private function obtenerServicios($user_id)
@@ -117,7 +156,11 @@ class IndependentServiceController extends Controller
             $service['service_id'] = $service->service->nombre;
         }
         
-        return response()->json($services->toArray());
+        return response()->json([
+                'success'   => true,
+                'msj'       => 'Perfil actualizado exitosamente',
+                'user_data' => $services
+            ]);
     }
 }
 

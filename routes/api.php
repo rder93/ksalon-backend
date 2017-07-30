@@ -46,7 +46,12 @@ Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 
 Route::post('/change_status/{id}', 'UsersController@change_status')->middleware('cors');
 Route::get('/rols', 'RolController@index');
-// Route::resource('independent.services','IndependentServiceController');
 
-Route::get('/independent/{user_id}/services','IndependentServiceController@index');
-Route::put('/independent/service/','IndependentServiceController@update');
+/*RUTAS PROFESIONAL INDEPENDIENTE*/
+Route::get('/independent/services','IndependentServiceController@index');
+Route::get('/independent/{user_id}/services','IndependentServiceController@show');
+Route::post('/independent/services/','IndependentServiceController@store');
+Route::put('/independent/service/{id}','IndependentServiceController@update');
+Route::delete('/independent/service/{id}','IndependentServiceController@destroy');
+
+/*FIN RUTA PROFESIONAL INDEPENDIENTE*/
