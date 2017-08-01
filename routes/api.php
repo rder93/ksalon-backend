@@ -44,6 +44,8 @@ Route::resource('scores','ScoreController');
 Route::resource('professionalServices', 'ProfessionalServiceController');
 Route::resource('certificates', 'CertificateController');
 Route::resource('detailLoungeCombo', 'DetailLoungeComboController');
+Route::resource('rofessionalCombo', 'ProfessionalComboController');
+Route::resource('detailProfessionalCombo', 'DetailProfessionalComboController');
 
 
 

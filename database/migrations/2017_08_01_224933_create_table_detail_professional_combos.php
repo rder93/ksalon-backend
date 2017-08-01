@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCombosProfessionalsTable extends Migration
+class CreateTableDetailProfessionalCombos extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateCombosProfessionalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('combos_professionals', function (Blueprint $table) {
+        Schema::create('detail_profesional_combos', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('descripcion');
-            $table->integer('precio')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->integer('combo_professional_id');
+            $table->integer('professional_service_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateCombosProfessionalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('combo_professionals');
+        Schema::dropIfExists('detail_profesional_combos');
     }
 }
