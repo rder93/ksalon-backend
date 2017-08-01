@@ -34,7 +34,7 @@ Route::resource('lounges', 'LoungeController');
 Route::resource('professionals', 'ProfessionalController');
 Route::resource('combos', 'ComboController');
 Route::resource('services', 'ServiceController');
-Route::resource('lounge.combos', 'ComboController');
+Route::resource('loungeCombos', 'ComboLoungeController');
 Route::resource('loungeServices', 'LoungeServiceController');
 Route::resource('user.transaction', 'UsersController');
 Route::resource('products', 'ProductsController');
@@ -43,6 +43,7 @@ Route::resource('transactions','TransactionsController');
 Route::resource('scores','ScoreController');
 Route::resource('professionalServices', 'ProfessionalServiceController');
 Route::resource('certificates', 'CertificateController');
+Route::resource('detailLoungeCombo', 'DetailLoungeComboController');
 
 
 

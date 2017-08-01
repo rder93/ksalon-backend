@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateComboDetalleLoungesTable extends Migration
+class CreateDetailLoungeCombosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateComboDetalleLoungesTable extends Migration
      */
     public function up()
     {
-        Schema::create('combo_detalle_lounges', function (Blueprint $table) {
+        Schema::create('detail_lounge_combos', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('lounge_id');
-            $table->integer('service_id');
-            $table->double('precio');
+            $table->integer('combo_lounge_id');
+            $table->integer('lounge_service_id');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreateComboDetalleLoungesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('combo_detalle_lounges');
+        Schema::dropIfExists('detail_lounge_combos');
     }
 }

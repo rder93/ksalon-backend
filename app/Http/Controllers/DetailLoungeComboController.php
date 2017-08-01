@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ComboLounge;
-use App\Models\DetailLoungeCombo;
 use Illuminate\Http\Request;
+use App\Models\DetailLoungeCombo;
 
-class ComboLoungeController extends Controller
+class DetailLoungeComboController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -37,94 +36,79 @@ class ComboLoungeController extends Controller
     public function store(Request $request)
     {
         $input=$request->all();
-        if ($input[0]) {
-            $comboLounge=ComboLounge::create($input[0]);
-            foreach ($input[1] as $detalleCombo) {
-                DetailLoungeCombo::create([
-                    'combo_lounge_id' => $comboLounge['id'],
-                    'lounge_service_id' => $detalleCombo['id'],                    
-                ]);
-            }
+        if ($input) {
+            $detailLoungeCombo=DetailLoungeCombo::create($input);
             return response()->json(
                 [
-                    'msj'=>'El Combo ha sido creado exitosamente.',
-                    'combo' => $comboLounge,
+                    'msj'=>'El Servicio ha sido agregado exitosamente.',
+                    'combo' => $detailLoungeCombo,
                     'code' => 1
                 ]
             );
         }else{
             return response()->json(
                 [
-                    'msj'=>'Error al crear el combo',
-                    'combo' => $comboLounge,
+                    'msj'=>'Error al agregar el servicio',
+                    'combo' => $detailLoungeCombo,
                     'code' => 0
                 ]
             );
         }
-        
-
-
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ComboLounge  $comboLounge
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        $comboLounges=ComboLounge::where('lounge_id','=',$id)->get();
-        return response()->json($comboLounges->toArray());
+        $detailLoungeCombos= DetailLoungeCombo::where('combo_lounge_id','=',$id)->get();
+        foreach ($detailLoungeCombos as $detailLoungeCombo) {
+            $detailLoungeCombo['nombre']=$detailLoungeCombo->lounge_service->service->nombre;
+        }
+        
+        return response()->json($detailLoungeCombos->toArray());
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\ComboLounge  $comboLounge
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $comboLounge=ComboLounge::findOrFail($id);
-        return response()->json($comboLounge->toArray());
+        //
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ComboLounge  $comboLounge
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $comboLounge = ComboLounge::FindOrFail($id);
-        $input = $request->all();
-        $comboLounge->fill($input)->save();
-        return response()->json(
-                [
-                    'msj'=>'El Combo ha sido actualizado exitosamente.',
-                    'servicio' => $comboLounge,
-                    'code' => 1
-                ]
-        );
+        //
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ComboLounge  $comboLounge
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $comboLounge = ComboLounge::FindOrFail($id);
-        $comboLounge->delete();
+        $detailLoungeCombo = DetailLoungeCombo::FindOrFail($id);
+        $detailLoungeCombo->delete();
         return response()->json(
                 [
-                    'msj'=>'El Combo ha sido eliminado exitosamente.',
-                    'producto' => $comboLounge,
+                    'msj'=>'El Servicio ha sido eliminado exitosamente.',
+                    'producto' => $detailLoungeCombo,
                     'code' => 1
                 ]
         );

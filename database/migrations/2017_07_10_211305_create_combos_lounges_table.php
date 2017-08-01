@@ -15,6 +15,9 @@ class CreateCombosLoungesTable extends Migration
     {
         Schema::create('combos_lounges', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('descripcion');
+            $table->integer('precio')->unsigned();
+            $table->integer('lounge_id')->->unsigned();
             $table->timestamps();
         });
     }
