@@ -36,15 +36,23 @@ class ProfessionalComboController extends Controller
      */
     public function store(Request $request)
     {
+        
         $input=$request->all();
+        // dd($input);
         if ($input[0]) {
             $comboProfessional=ComboProfessional::create($input[0]);
-            foreach ($input[1] as $detalleCombo) {
+            for ($i=0; $i < count($input[1]); $i++) { 
                 DetailProfessionalCombo::create([
                     'combo_professional_id' => $comboProfessional['id'],
-                    'professional_service_id' => $detalleCombo['id'],                    
+                    'professional_service_id' => $input[1][$i]['id'],                    
                 ]);
             }
+            // foreach ($input[1] as $detalleCombo) {
+            //     DetailProfessionalCombo::create([
+            //         'combo_professional_id' => $comboProfessional['id'],
+            //         'professional_service_id' => $detalleCombo['id'],                    
+            //     ]);
+            // }
             return response()->json(
                 [
                     'msj'=>'El Combo ha sido creado exitosamente.',

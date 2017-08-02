@@ -44,7 +44,7 @@ Route::resource('scores','ScoreController');
 Route::resource('professionalServices', 'ProfessionalServiceController');
 Route::resource('certificates', 'CertificateController');
 Route::resource('detailLoungeCombo', 'DetailLoungeComboController');
-Route::resource('rofessionalCombo', 'ProfessionalComboController');
+Route::resource('professionalCombos', 'ProfessionalComboController');
 Route::resource('detailProfessionalCombo', 'DetailProfessionalComboController');
 
 
@@ -67,5 +67,7 @@ Route::get('/independent/{user_id}/services','IndependentServiceController@show'
 Route::post('/independent/services/','IndependentServiceController@store');
 Route::put('/independent/service/{id}','IndependentServiceController@update');
 Route::delete('/independent/service/{id}','IndependentServiceController@destroy');
+
+Route::get('verServicioIndependiente/{id}', 'IndependentServiceController@verServicioIndependiente');
 
 /*FIN RUTA PROFESIONAL INDEPENDIENTE*/
