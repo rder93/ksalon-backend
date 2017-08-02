@@ -15,33 +15,33 @@ class LoungeSeeder extends Seeder
         $datos = [
         	[
                 'nombre'      => 'Peluqueria 1',
-                'descripcion'    => 'aqui va la descripcion',
+                // 'descripcion'    => 'aqui va la descripcion',
                 'latitud'    => '-62.758308',
-                'longitud'     => '8.281954',
+                'altitud'     => '8.281954',
                 'user_id'     => '1',
                 'category_id' => '1'
             ],
             [
                 'nombre'      => 'Peluqueria 2',
-                'descripcion'    => 'aqui va la descripcion',
+                // 'descripcion'    => 'aqui va la descripcion',
                 'latitud'    => '-61.758308',
-                'longitud'     => '8.281954',
+                'altitud'     => '8.281954',
                 'user_id'     => '1',
                 'category_id' => '1'
             ],
             [
                 'nombre'      => 'Peluqueria 3',
-                'descripcion'    => 'aqui va la descripcion',
+                // 'descripcion'    => 'aqui va la descripcion',
                 'latitud'    => '-60.758308',
-                'longitud'     => '8.281954',
+                'altitud'     => '8.281954',
                 'user_id'     => '1',
                 'category_id' => '1'
             ],
             [
                 'nombre'      => 'Peluqueria 4',
-                'descripcion'    => 'aqui va la descripcion',
+                // 'descripcion'    => 'aqui va la descripcion',
                 'latitud'    => '-69.758308',
-                'longitud'     => '8.281954',
+                'altitud'     => '8.281954',
                 'user_id'     => '1',
                 'category_id' => '1'
             ],
