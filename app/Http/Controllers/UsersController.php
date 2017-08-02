@@ -186,7 +186,8 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        
+        $user=User::FindOrFail($id);
+        return response()->json($user->toArray());
     }
 
     public function editData(Request $request , $id){
@@ -458,6 +459,36 @@ class UsersController extends Controller
             }
         // }
     }
+
+    public function updateUser(Request $request)
+    {
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
+        }
+        else{
+            $nombre= $request['foto'];
+        }
+        $usuario = User::FindOrFail($request['id']);
+        $input = ([
+                    'name' => $request['name'],
+                    'avatar'   => $nombre,
+                    'email' => $request['email'],
+                    'dni' => $request['dni'],
+                    'paypal' => $request['paypal'],
+                ]);
+        $usuario->fill($input)->save();
+        return response()->json(
+                [
+                    'msj'=>'El Usuario ha sido actualizado exitosamente.',
+                    'lounge' => $usuario,
+                    'code' => 1
+                ]
+        );
+
+    }
+
 
     /**
      * Remove the specified resource from storage.
