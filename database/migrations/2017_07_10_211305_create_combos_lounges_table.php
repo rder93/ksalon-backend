@@ -17,7 +17,7 @@ class CreateCombosLoungesTable extends Migration
             $table->increments('id');
             $table->string('descripcion');
             $table->integer('precio')->unsigned();
-            $table->integer('lounge_id')->->unsigned();
+            $table->integer('lounge_id')->unsigned();
             $table->timestamps();
         });
     }
