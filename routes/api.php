@@ -71,3 +71,7 @@ Route::delete('/independent/service/{id}','IndependentServiceController@destroy'
 Route::get('verServicioIndependiente/{id}', 'IndependentServiceController@verServicioIndependiente');
 
 /*FIN RUTA PROFESIONAL INDEPENDIENTE*/
+
+
+/* BUSCAR QUE LOUNGES REALIZA LOS SERVICIOS */
+Route::get('/buscarLoungesServices', 'LoungeServiceController@buscarLoungesServices');

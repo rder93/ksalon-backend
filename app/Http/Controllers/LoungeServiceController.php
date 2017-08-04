@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoungeService;
+use App\Models\Lounge;
 use Illuminate\Http\Request;
+
+use DB;
 
 class LoungeServiceController extends Controller
 {
@@ -134,5 +137,21 @@ class LoungeServiceController extends Controller
                     'code' => 1
                 ]
         );
+    }
+
+    public function buscarLoungesServices(Request $request)
+    {
+        return DB::table('lounges_services')
+            ->whereIn('service_id', $request->servicios)
+            ->get();
+
+        // return DB::table('lounges_services')
+        //     ->select('id', 'lounge_id', 'service_id', 'precio', 'created_at', 'updated_at')
+        //     ->whereIn('service_id', $request->servicios)
+        //     ->groupBy('lounge_id')
+        //     ->get();
+
+        // $lounge = Lounge::all();
+        // return response()->json($lounge);
     }
 }
