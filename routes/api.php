@@ -74,4 +74,9 @@ Route::get('verServicioIndependiente/{id}', 'IndependentServiceController@verSer
 
 
 /* BUSCAR QUE LOUNGES REALIZA LOS SERVICIOS */
-Route::get('/buscarLoungesServices', 'LoungeServiceController@buscarLoungesServices');
+Route::get('/buscar_lounges_services', 'LoungeServiceController@buscarLoungesServices');
+
+
+// Para el pago con paypal
+Route::get('/payment', 'PaypalController@payment');
+Route::get('payment/status', 'PaypalController@paymentStatus');

@@ -141,9 +141,22 @@ class LoungeServiceController extends Controller
 
     public function buscarLoungesServices(Request $request)
     {
-        return DB::table('lounges_services')
+
+        $salones = DB::table('lounges_services')
+            ->select('lounges_services.id', 'lounge_id', 'lounges.nombre as nombre_salon', 'service_id', 'lounges.created_at', 'lounges.updated_at', 'services.nombre as nombre_servicio', 'lounges.latitud', 'lounges.altitud')
+            ->join('lounges', 'lounges_services.lounge_id', '=', 'lounges.id')
+            ->join('services', 'lounges_services.service_id', '=', 'services.id')
             ->whereIn('service_id', $request->servicios)
-            ->get();
+            ->get()
+            ->groupBy('lounge_id');
+
+        $lounges = [];
+        foreach ($salones as $key => $value) {
+            // echo "clave: ". $key . "   --   Valor: ". $value . "<br><br>";
+            $lounges[] = $value;
+        }
+
+        return response()->json($lounges);
 
         // return DB::table('lounges_services')
         //     ->select('id', 'lounge_id', 'service_id', 'precio', 'created_at', 'updated_at')
