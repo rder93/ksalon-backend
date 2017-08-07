@@ -28,12 +28,12 @@ class IndependentServiceSeeder extends Seeder
                             'precio'		=> 10000
                         ],
                         [
-                            'user_id'		=> 5,
+                            'user_id'		=> 6,
                             'service_id'	=> 3,
                             'precio'		=> 5000
                         ],
                         [
-                            'user_id'		=> 5,
+                            'user_id'		=> 6,
                             'service_id'	=> 2,
                             'precio'		=> 10000
                         ]

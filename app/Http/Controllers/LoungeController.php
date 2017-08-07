@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Lounge;
 use Illuminate\Http\Request;
 
+use DB;
+
 class LoungeController extends Controller
 {
     /**
@@ -87,8 +89,15 @@ class LoungeController extends Controller
      * @param  \App\Models\Lounge  $lounge
      * @return \Illuminate\Http\Response
      */
-    public function edit(Lounge $lounge)
+    public function edit($lounge_id)
     {
+        $lounge =   DB::table('lounges')
+                    ->select('lounges.id', 'lounges.nombre', 'lounges.descripcion', 'lounges.latitud', 'lounges.altitud', 'lounges.user_id', 'lounges.category_id', 'lounges.created_at', 'lounges.updated_at', 'categories.nombre as nombre_categoria', 'users.name as nombre_usuario')
+                    ->join('categories', 'lounges.category_id', '=', 'categories.id')
+                    ->join('users', 'lounges.user_id', '=', 'users.id')
+                    ->where('lounges.id', $lounge_id)
+                    ->first();
+
         return response()->json(
                 [
                     "lounge" => $lounge,

@@ -15,13 +15,13 @@ class CategorySeeder extends Seeder
     {
         $datos = [
         	[
-        		'nombre' 	=> 'Salones Grandes',
+        		'nombre' 	=> 'Gran Salon',
         	],
             [
-                'nombre'    => 'Salones',
+                'nombre'    => 'Salon',
             ],
             [
-                'nombre'    => 'Independientes',
+                'nombre'    => 'Profesional independiente',
             ]
         ];
 
