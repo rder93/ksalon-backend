@@ -8,7 +8,7 @@ use App\Models\Service;
 
 class LoungeService extends Model
 {
-    protected $fillable = ['lounge_id','service_id','precio'];
+    protected $fillable = ['lounge_id','service_id','precio','foto'];
 
     protected $table= 'lounges_services';
     protected $primarykey = 'id';

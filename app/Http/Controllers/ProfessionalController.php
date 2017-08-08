@@ -50,7 +50,7 @@ class ProfessionalController extends Controller
             $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
             $request->file("foto")->move('imagenes',$nombre);
         }else{
-            $nombre='no_avatar.jpg';
+            $nombre='no_photo.png';
         }
         try{
             $professional = Professional::create([

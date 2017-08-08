@@ -42,9 +42,21 @@ class LoungeServiceController extends Controller
     public function store(Request $request)
     {
         try{
-            $loungeService = LoungeService::create(
-                $request->all()
-            );
+            $input= $request->all();
+            if ($request->file("foto")) {
+                $aleatorio = str_random(6);
+                $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+                $request->file("foto")->move('imagenes',$nombre);
+            }else{
+                $nombre='no_avatar.jpg';
+            }
+
+            $loungeService = LoungeService::create([
+                'lounge_id' => $input['lounge_id'],
+                'service_id' => $input['service_id'],
+                'precio' => $input['precio'],
+                'foto' => $nombre,
+            ]);
 
             return response()->json(
                 [
