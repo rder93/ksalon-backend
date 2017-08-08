@@ -99,7 +99,7 @@ class LoungeServiceController extends Controller
      */
     public function edit($id)
     {
-        $loungeService= LoungeService::where('lounge_id','=',$id)->firstOrFail();
+        $loungeService = LoungeService::FindOrFail($id);
         $loungeService['nombre']=$loungeService->service->nombre;
         return response()->json($loungeService->toArray());
     }
@@ -118,6 +118,35 @@ class LoungeServiceController extends Controller
      * @param  \App\Models\LoungeService  $loungeService
      * @return \Illuminate\Http\Response
      */
+
+    public function updateService(Request $request)
+    {
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
+        }
+        else{
+            $nombre= $request['foto'];
+        }
+        $loungeService = LoungeService::FindOrFail($request['id']);
+        $input = ([
+                    'lounge_id' => $request['lounge_id'],
+                    'service_id' => $request['service_id'],
+                    'precio' => $request['precio'],
+                    'foto' => $nombre,
+                ]);
+        $loungeService->fill($input)->save();
+        return response()->json(
+                [
+                    'msj'=>'El Servicio ha sido actualizado exitosamente.',
+                    'lounge' => $loungeService,
+                    'code' => 1
+                ]
+        );
+
+    }
+
     public function update(Request $request, $id)
     {
         $loungeService = LoungeService::FindOrFail($id);

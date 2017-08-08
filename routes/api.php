@@ -55,6 +55,7 @@ Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioP
 Route::post('updateProfessional','ProfessionalController@updateProfessional');
 Route::post('updateCertificate','CertificateController@updateCertificate');
 Route::post('updateUser','UsersController@updateUser');
+Route::post('updateService','LoungeServiceController@updateService');
 
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 
