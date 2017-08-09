@@ -44,24 +44,34 @@ class IndependentServiceController extends Controller
     public function store(Request $request)
     {
 
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
+        }
+
         $independent_service = new IndependentService;
         $independent_service->user_id = $request->id_user;
-        $independent_service->service_id = $request->id_service['id'];
+        $independent_service->service_id = $request->service_id;
         $independent_service->precio = $request->precio;
+        $independent_service->descripcion = $request->descripcion;
+        if($request->file("foto")){
+            $independent_service->foto = $nombre;
+        }
 
 
         if ($independent_service->save()) {
-                return response()->json([
-                    'success' => true,
-                    'msj'     => 'Servicio creado exitosamente',
-                    'service_data' => $independent_service
-                ]);
-            }else{
-                return response()->json([
-                    'success' => false,
-                    'msj'     => 'Error al crear servicio'
-                ]);
-            }
+            return response()->json([
+                'success' => true,
+                'msj'     => 'Servicio creado exitosamente',
+                'service_data' => $independent_service
+            ]);
+        }else{
+            return response()->json([
+                'success' => false,
+                'msj'     => 'Error al crear servicio'
+            ]);
+        }
     }
 
     /**
@@ -102,24 +112,34 @@ class IndependentServiceController extends Controller
     public function update(Request $request, $id)
     {
 
-        try {
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
 
-            $independent_service = IndependentService::find($id);
-            $independent_service->precio = $request->precio;
-            
-            if ($independent_service->save()) {
-                return response()->json([
-                        'success'   => true,
-                        'msj'       => 'Servicio actualizado exitosamente',
-                        'user_data' => $independent_service
-                    ]);
-            }
-
-        } catch (Exception $e) {
-            return response()->json(['msj' => $e]);
         }
 
-        // return response()->json($this->obtenerServicios());
+        $independent_service = IndependentService::find($id);
+        $independent_service->precio = $request->precio;
+        $independent_service->descripcion = $request->descripcion;
+
+        if($request->file("foto")){
+            $independent_service->foto = $nombre;
+        }
+       
+        
+        if ($independent_service->save()) {
+            return response()->json([
+                'success'   => true,
+                'msj'       => 'Servicio actualizado exitosamente',
+                'user_data' => $independent_service
+            ]);
+        }else{
+            return response()->json([
+                'success' => false,
+                'msj'     => 'Error al actualizar el servicio'
+            ]);
+        }
     }
 
     /**
@@ -146,10 +166,3 @@ class IndependentServiceController extends Controller
         return response()->json($independentService->toArray());
     }
 }
-
-// $independent = User::find($request->user_id)->independent;
-// return DB::table('independents_services')
-//             ->join('services', 'independents_services.service_id', '=', 'services.id')
-//             ->select('independents_services.id', 'independents_services.precio', 'independents_services.service_id','services.nombre as service_nombre', 'independents_services.created_at', 'independents_services.updated_at')
-//             ->where('independents_services.independent_id', '=', $independent->id)
-//             ->get();

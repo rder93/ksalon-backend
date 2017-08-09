@@ -7,7 +7,7 @@ use App\Models\User;
 
 class ComboProfessional extends Model
 {
-    protected $fillable = ['descripcion','precio','user_id'];
+    protected $fillable = ['descripcion','precio', 'foto', 'user_id'];
 
     protected $table= 'combos_professionals';
     protected $primarykey = 'id';

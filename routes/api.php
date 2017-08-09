@@ -59,6 +59,8 @@ Route::post('updateService','LoungeServiceController@updateService');
 
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 
+Route::post('/professionalCombos/{id}', 'ProfessionalComboController@update')->middleware('cors');
+
 Route::post('/change_status/{id}', 'UsersController@change_status')->middleware('cors');
 Route::get('/rols', 'RolController@index');
 
@@ -66,7 +68,7 @@ Route::get('/rols', 'RolController@index');
 Route::get('/independent/services','IndependentServiceController@index');
 Route::get('/independent/{user_id}/services','IndependentServiceController@show');
 Route::post('/independent/services/','IndependentServiceController@store');
-Route::put('/independent/service/{id}','IndependentServiceController@update');
+Route::post('/independent/service/{id}','IndependentServiceController@update');
 Route::delete('/independent/service/{id}','IndependentServiceController@destroy');
 
 Route::get('verServicioIndependiente/{id}', 'IndependentServiceController@verServicioIndependiente');

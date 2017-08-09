@@ -17,6 +17,7 @@ class CreateCombosProfessionalsTable extends Migration
             $table->increments('id');
             $table->string('descripcion');
             $table->integer('precio')->unsigned();
+            $table->string('foto')->nullable()->default('no_photo.png');
             $table->integer('user_id')->unsigned();
             $table->timestamps();
         });

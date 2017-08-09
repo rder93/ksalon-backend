@@ -18,6 +18,8 @@ class CreateIndependentsServicesTable extends Migration
             $table->integer('user_id');
             $table->integer('service_id');
             $table->double('precio');
+            $table->string('descripcion');
+            $table->string('foto')->nullable()->default('no_photo.png');
             $table->timestamps();
         });
     }

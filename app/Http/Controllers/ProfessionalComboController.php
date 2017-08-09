@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\ComboProfessional;
 use App\Models\DetailProfessionalCombo;
+use App\Models\Service;
 
 class ProfessionalComboController extends Controller
 {
@@ -36,23 +37,43 @@ class ProfessionalComboController extends Controller
      */
     public function store(Request $request)
     {
-        
+
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
+        }
+
         $input=$request->all();
-        // dd($input);
-        if ($input[0]) {
-            $comboProfessional=ComboProfessional::create($input[0]);
-            for ($i=0; $i < count($input[1]); $i++) { 
+
+        $myindex = "user_id";
+        $index = 0;
+        foreach ($input as $k => $v) {
+            if ($k == $myindex) {
+                $myindex=$index;
+            }
+            $index=$index+1;
+        }
+
+        if ($input) {
+
+            $comboProfessional = new ComboProfessional;
+            $comboProfessional->descripcion = $input['descripcion'];
+            $comboProfessional->precio = $input['precio'];
+            $comboProfessional->user_id = $input['user_id'];
+            if($request->file("foto")){
+                $comboProfessional->foto = $nombre;
+            }
+
+            $comboProfessional->save();
+
+            for ($i=0; $i < $myindex; $i++) { 
                 DetailProfessionalCombo::create([
                     'combo_professional_id' => $comboProfessional['id'],
-                    'professional_service_id' => $input[1][$i]['id'],                    
+                    'professional_service_id' => $input[$i],                    
                 ]);
             }
-            // foreach ($input[1] as $detalleCombo) {
-            //     DetailProfessionalCombo::create([
-            //         'combo_professional_id' => $comboProfessional['id'],
-            //         'professional_service_id' => $detalleCombo['id'],                    
-            //     ]);
-            // }
+
             return response()->json(
                 [
                     'msj'=>'El Combo ha sido creado exitosamente.',
@@ -60,6 +81,7 @@ class ProfessionalComboController extends Controller
                     'code' => 1
                 ]
             );
+            
         }else{
             return response()->json(
                 [
@@ -104,16 +126,55 @@ class ProfessionalComboController extends Controller
      */
     public function update(Request $request, $id)
     {
+
+        // dd($request->all());
+
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
+        }
+        $comboData = [];
+        
         $comboProfessional = ComboProfessional::FindOrFail($id);
         $input = $request->all();
-        $comboProfessional->fill($input)->save();
-        return response()->json(
-                [
-                    'msj'=>'El Combo ha sido actualizado exitosamente.',
-                    'servicio' => $comboProfessional,
-                    'code' => 1
-                ]
-        );
+
+        $myindex = "id";
+        $index = 0;
+        foreach ($input as $k => $v) {
+            if ($k == $myindex) {
+                $myindex=$index;
+            }
+            $index=$index+1;
+        }
+
+        $comboProfessional->descripcion = $input['descripcion'];
+        $comboProfessional->precio = $input['precio'];
+        if($request->file("foto")){
+            $comboProfessional->foto = $nombre;
+        }
+
+        if($comboProfessional->save()){
+            for ($i=0; $i < $myindex; $i++) { 
+                DetailProfessionalCombo::create([
+                    'combo_professional_id' => $comboProfessional['id'],
+                    'professional_service_id' => $input[$i],                    
+                ]);
+            }
+            return response()->json([
+                'msj'=>'El Combo ha sido actualizado exitosamente',
+                'servicio' => $comboProfessional,
+                'code' => 1
+            ]);
+        }else{
+            return response()->json([
+                'msj'=>'Ocurrio un error',
+                'servicio' => $comboProfessional,
+                'code' => 0
+            ]);
+        }
+
+        
     }
 
     /**
