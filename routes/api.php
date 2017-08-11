@@ -36,6 +36,7 @@ Route::resource('combos', 'ComboController');
 Route::resource('services', 'ServiceController');
 Route::resource('loungeCombos', 'ComboLoungeController');
 Route::resource('loungeServices', 'LoungeServiceController');
+Route::resource('loungePhotos', 'LoungePhotoController');
 Route::resource('user.transaction', 'UsersController');
 Route::resource('products', 'ProductsController');
 Route::resource('tickets', 'TicketsController');
