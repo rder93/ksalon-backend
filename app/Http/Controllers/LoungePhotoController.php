@@ -107,7 +107,7 @@ class LoungePhotoController extends Controller
         $loungephoto->fill($input)->save();
         return response()->json(
                 [
-                    'msj'=>'El Certificado ha sido actualizado exitosamente.',
+                    'msj'=>'La foto ha sido actualizado exitosamente.',
                     'lounge' => $loungephoto,
                     'code' => 1
                 ]

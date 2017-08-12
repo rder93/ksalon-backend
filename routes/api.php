@@ -42,7 +42,6 @@ Route::resource('products', 'ProductsController');
 Route::resource('tickets', 'TicketsController');
 Route::resource('transactions','TransactionsController');
 Route::resource('scores','ScoreController');
-Route::resource('professionalServices', 'ProfessionalServiceController');
 Route::resource('certificates', 'CertificateController');
 Route::resource('detailLoungeCombo', 'DetailLoungeComboController');
 Route::resource('professionalCombos', 'ProfessionalComboController');
@@ -79,6 +78,7 @@ Route::get('verServicioIndependiente/{id}', 'IndependentServiceController@verSer
 
 /* BUSCAR QUE LOUNGES REALIZA LOS SERVICIOS */
 Route::get('/buscar_lounges_services', 'LoungeServiceController@buscarLoungesServices');
+Route::post('/loungePhotos/{id}', 'LoungePhotoController@update')->middleware('cors');
 
 
 // Para el pago con paypal
