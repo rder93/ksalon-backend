@@ -34,68 +34,68 @@ class PaypalController extends Controller
     public function payment()
     {
     	$payer = new Payer();
-    			$payer->setPaymentMethod('paypal');
-    			$items = array();
-    			$subtotal = 0;
-    			$cart = \Session::get('cart');
-    			$currency = 'MXN';
-    			foreach($cart as $producto){
-    				$item = new Item();
-    				$item->setName($producto->name)
-    				->setCurrency($currency)
-    				->setDescription($producto->extract)
-    				->setQuantity($producto->quantity)
-    				->setPrice($producto->price);
-    				$items[] = $item;
-    				$subtotal += $producto->quantity * $producto->price;
-    			}
-    			$item_list = new ItemList();
-    			$item_list->setItems($items);
-    			$details = new Details();
-    			$details->setSubtotal($subtotal)
-    			->setShipping(100);
-    			$total = $subtotal + 100;
-    			$amount = new Amount();
-    			$amount->setCurrency($currency)
-    				->setTotal($total)
-    				->setDetails($details);
-    			$transaction = new Transaction();
-    			$transaction->setAmount($amount)
-    				->setItemList($item_list)
-    				->setDescription('Pedido de prueba en mi Laravel App Store');
-    			$redirect_urls = new RedirectUrls();
-    			$redirect_urls->setReturnUrl(\URL::route('payment.status'))
-    				->setCancelUrl(\URL::route('payment.status'));
-    			$payment = new Payment();
-    			$payment->setIntent('Sale')
-    				->setPayer($payer)
-    				->setRedirectUrls($redirect_urls)
-    				->setTransactions(array($transaction));
-    			try {
-    				$payment->create($this->_api_context);
-    			} catch (\PayPal\Exception\PPConnectionException $ex) {
-    				if (\Config::get('app.debug')) {
-    					echo "Exception: " . $ex->getMessage() . PHP_EOL;
-    					$err_data = json_decode($ex->getData(), true);
-    					exit;
-    				} else {
-    					die('Ups! Algo salió mal');
-    				}
-    			}
-    			foreach($payment->getLinks() as $link) {
-    				if($link->getRel() == 'approval_url') {
-    					$redirect_url = $link->getHref();
-    					break;
-    				}
-    			}
-    			// add payment ID to session
-    			\Session::put('paypal_payment_id', $payment->getId());
-    			if(isset($redirect_url)) {
-    				// redirect to paypal
-    				return \Redirect::away($redirect_url);
-    			}
-    			return \Redirect::route('cart-show')
-    				->with('error', 'Ups! Error desconocido.');
+		$payer->setPaymentMethod('paypal');
+		$items = array();
+		$subtotal = 0;
+		$cart = \Session::get('cart');
+		$currency = 'MXN';
+		foreach($cart as $producto){
+			$item = new Item();
+			$item->setName($producto->name)
+			->setCurrency($currency)
+			->setDescription($producto->extract)
+			->setQuantity($producto->quantity)
+			->setPrice($producto->price);
+			$items[] = $item;
+			$subtotal += $producto->quantity * $producto->price;
+		}
+		$item_list = new ItemList();
+		$item_list->setItems($items);
+		$details = new Details();
+		$details->setSubtotal($subtotal)
+		->setShipping(100);
+		$total = $subtotal + 100;
+		$amount = new Amount();
+		$amount->setCurrency($currency)
+			->setTotal($total)
+			->setDetails($details);
+		$transaction = new Transaction();
+		$transaction->setAmount($amount)
+			->setItemList($item_list)
+			->setDescription('Pedido de prueba en mi Laravel App Store');
+		$redirect_urls = new RedirectUrls();
+		$redirect_urls->setReturnUrl(\URL::route('payment.status'))
+			->setCancelUrl(\URL::route('payment.status'));
+		$payment = new Payment();
+		$payment->setIntent('Sale')
+			->setPayer($payer)
+			->setRedirectUrls($redirect_urls)
+			->setTransactions(array($transaction));
+		try {
+			$payment->create($this->_api_context);
+		} catch (\PayPal\Exception\PPConnectionException $ex) {
+			if (\Config::get('app.debug')) {
+				echo "Exception: " . $ex->getMessage() . PHP_EOL;
+				$err_data = json_decode($ex->getData(), true);
+				exit;
+			} else {
+				die('Ups! Algo salió mal');
+			}
+		}
+		foreach($payment->getLinks() as $link) {
+			if($link->getRel() == 'approval_url') {
+				$redirect_url = $link->getHref();
+				break;
+			}
+		}
+		// add payment ID to session
+		\Session::put('paypal_payment_id', $payment->getId());
+		if(isset($redirect_url)) {
+			// redirect to paypal
+			return \Redirect::away($redirect_url);
+		}
+		return \Redirect::route('cart-show')
+			->with('error', 'Ups! Error desconocido.');
     	
     }
 

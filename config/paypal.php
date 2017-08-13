@@ -1,7 +1,7 @@
 <?php
 	return array(
-		'client_id'	=> 'AYSq3RDGsmBLJE-otTkBtM-jBRd1TCQwFf9RGfwddNXWz0uFU9ztymylOhRS',
-		'secret'	=> 'EGnHDxD_qRPdaLdZz8iCr8N7_MzF-YHPTkjs6NKYQvQSBngp4PTTVWkPZRbL',
+		'client_id'	=> 'Aci2LpZ0BSQOQmx0mlX_6RubqE32VgH512TYRvLNbYmkW0_qHVxLruFTYre4yoSOcu6kmdl0TLwFrMJ1',
+		'secret'	=> 'EESR9_DajDUaDnlujNd2TBWrhhq_1_uJy_9jN44XMr0YFvXlfrPGE0QzVQtvC4oUOxwxN3ClXK7WiWl0',
 
 		/**
 			SDK configuration
