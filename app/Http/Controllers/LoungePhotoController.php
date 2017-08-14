@@ -96,18 +96,18 @@ class LoungePhotoController extends Controller
             $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
             $request->file("foto")->move('imagenes',$nombre);
         }
-        else{
-            $nombre= $request['foto'];
-        }
+
         $loungephoto = LoungePhoto::FindOrFail($id);
         $input = ([
-                    'foto'   => $nombre,
                     'lounge_id' => $request['lounge_id']
                 ]);
+        if($request->file("foto")){
+            $input['foto'] = $nombre;
+        }
         $loungephoto->fill($input)->save();
         return response()->json(
                 [
-                    'msj'=>'La foto ha sido actualizado exitosamente.',
+                    'msj'=>'La foto ha sido actualizado exitosamente...',
                     'lounge' => $loungephoto,
                     'code' => 1
                 ]
