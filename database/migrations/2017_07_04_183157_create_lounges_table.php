@@ -18,7 +18,7 @@ class CreateLoungesTable extends Migration
             $table->string('nombre');
             $table->text('descripcion');
             $table->string('latitud');
-            $table->string('longitud');
+            $table->string('altitud');
             $table->integer('user_id')->unsigned();
             $table->integer('category_id')->unsigned();
             $table->timestamps();

@@ -165,4 +165,23 @@ class IndependentServiceController extends Controller
         $independentService['service_id']=$independentService->service->nombre;
         return response()->json($independentService->toArray());
     }
+
+    public function buscarIndependentsServices(Request $request)
+    {
+        $salones = DB::table('independents_services')
+            ->select('independents_services.id', 'user_id', 'users.name as nombre_salon', 'users.name as nombre_usuario', 'independents_services.service_id', 'independents_services.precio', 'independents_services.foto', 'independents_services.created_at', 'independents_services.updated_at', 'services.nombre as nombre_servicio', 'users.latitud', 'users.altitud')
+            ->join('services', 'independents_services.service_id', '=', 'services.id')
+            ->join('users', 'independents_services.user_id', '=', 'users.id')
+            ->whereIn('service_id', $request->servicios)
+            ->get()
+            ->groupBy('lounge_id');
+
+        $lounges = [];
+        foreach ($salones as $key => $value) {
+            // echo "clave: ". $key . "   --   Valor: ". $value . "<br><br>";
+            $lounges[] = $value;
+        }
+
+        return response()->json($lounges);
+    }
 }
