@@ -48,6 +48,7 @@ Route::resource('professionalCombos', 'ProfessionalComboController');
 Route::resource('detailProfessionalCombo', 'DetailProfessionalComboController');
 
 
+Route::get('/roles','RolController@roles');
 
 Route::get('/transaccion/{id}','TransactionsController@show');
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');

@@ -62,7 +62,7 @@ class UsersController extends Controller
         $password = $request->password;
         $rol_id   = $request->rol_id;
         if ($request['categoria']) {
-            $rol_id=$request['categoria']+1;
+            $rol_id=$request['categoria'];
         }
         // return response()->json([
         //         'success' => true,

@@ -24,8 +24,8 @@ class CreateUsersTable extends Migration
             $table->string('dni')->nullable();             // Numero de identificacion
             $table->string('paypal',150)->unique()->nullable(); // Cuenta paypal del usuario (Solo visible para el admin)
 
-            $table->string('latitud');
-            $table->string('altitud');
+            $table->string('latitud')->nullable();
+            $table->string('altitud')->nullable();
             $table->integer('rol_id')->unsigned();
             $table->rememberToken();
             $table->timestamps();

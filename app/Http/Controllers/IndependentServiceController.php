@@ -174,7 +174,7 @@ class IndependentServiceController extends Controller
             ->join('users', 'independents_services.user_id', '=', 'users.id')
             ->whereIn('service_id', $request->servicios)
             ->get()
-            ->groupBy('lounge_id');
+            ->groupBy('user_id');
 
         $lounges = [];
         foreach ($salones as $key => $value) {

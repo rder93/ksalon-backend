@@ -83,4 +83,10 @@ class RolController extends Controller
     {
         //
     }
+
+    public function roles()
+    {
+        $rols = Rol::where('id', '<>', '1')->get();
+        return response()->json($rols);
+    }
 }
