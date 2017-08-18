@@ -87,3 +87,18 @@ Route::post('/loungePhotos/{id}', 'LoungePhotoController@update')->middleware('c
 // Para el pago con paypal
 Route::get('/payment', 'PaypalController@payment');
 Route::get('payment/status', 'PaypalController@paymentStatus');
+
+
+
+
+/*Mensajes*/
+Route::get('/user/{id}/messages', 'MessagesController@userMessages');
+// Route::get('/user/{id}/messages', 'MessagesController@userMessages');
+// Route::get('/user/{user_id}/messages/{user_to_id}','MessagesController@conversation');
+
+Route::get('/user/{user_id}/seller/{user_to_id}/messages/{transaction_id}','MessagesController@conversation');
+Route::get('/message','MessagesController@store');
+
+
+
+/*Tickets*/

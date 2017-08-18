@@ -10,6 +10,8 @@ use App\Models\User;
 
 use App\Models\Lounge;
 
+use App\Models\Score;
+
 use Validator;
 
 use Illuminate\Validation\Rule;
@@ -187,6 +189,18 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user=User::FindOrFail($id);
+
+        if($user){
+            $ratings = Score::where('user_to_id',$user->id)->get();
+
+            if(count($ratings)>0){
+                foreach($ratings as $rating){
+                    $rating->creator = User::find($rating->user_id);
+                }
+            }
+            $user->ratings = $ratings;
+        }
+
         return response()->json($user->toArray());
     }
 

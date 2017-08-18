@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Transactions;
+// use App\Models\Transactions;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -24,9 +24,9 @@ class TransactionsController extends Controller
             if($user->rol_id != 0){
                 // $transactions = Transaction::where('buyer_id',$id)->orWhere('seller_id',$id)->orderBy('created_at','DESC')->get();
                 if($user->rol_id==4)
-                    $transactions = Transactions::where('user_id',$user->id)->orderBy('created_at','DESC')->get();
-                else if($user->rol!=0 && $user->rol!=4)
-                    $transactions = Transactions::where('user_to_id',$user->id)->orderBy('created_at','DESC')->get();
+                    $transactions = Transaction::where('user_id',$user->id)->orderBy('created_at','DESC')->get();
+                else if($user->rol_id!=0 && $user->rol_id!=4)
+                    $transactions = Transaction::where('user_to_id',$user->id)->orderBy('created_at','DESC')->get();
 
 
                 $nonReview = 0;
@@ -98,7 +98,7 @@ class TransactionsController extends Controller
     public function show($id)
     {
         
-        $t =Transactions::find($id);
+        $t =Transaction::find($id);
 
         if ($t) {
             $t->seller = User::find($t->user_to_id);

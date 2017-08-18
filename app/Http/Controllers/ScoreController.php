@@ -58,10 +58,10 @@ class ScoreController extends Controller
 
         $messages = [
             'puntaje.required'    => 'Selecciona las estrellas de puntuacion',
-            'puntaje.integer'     => 'Error al enviar calificacion',
+            'puntaje.integer'     => '3Error al enviar calificacion',
             'comentario.required' => 'Ingresa un comentario sobre tu experiencia' ,
-            'user_id.required'    => 'Error al enviar calificacion',
-            'user_to_id.required' => 'Error al enviar calificacion'
+            'user_id.required'    => '1Error al enviar calificacion',
+            'user_to_id.required' => '2Error al enviar calificacion'
         ];
 
         $valide = Validator::make($input , $rules , $messages);
@@ -80,21 +80,19 @@ class ScoreController extends Controller
             $score->user_id        = $request->user_id;
             $score->user_to_id     = $request->user_to_id;
             $score->transaction_id = $request->transaction_id;
-            $score->save();
 
-        }
+            if($score->save()){
+                return response()->json([
+                    'success'   => true,
+                    'msj'       => 'Calificacion enviada exitosamente'
+                ]);
 
-        if($score->save()){
-            return response()->json([
-                'success'   => true,
-                'msj'       => 'Calificacion enviada exitosamente'
-            ]);
-
-        }else{
-            return response()->json([
-                'success' => false,
-                'msj'     => 'Error al enviar calificacion'
-            ]);
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'msj'     => 'Error al enviar calificacion'
+                ]);
+            }
         }
     }
 

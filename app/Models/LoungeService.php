@@ -23,3 +23,4 @@ class LoungeService extends Model
         return $this->belongsTo(Service::class);
     }
 }
+

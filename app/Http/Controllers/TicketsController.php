@@ -24,21 +24,34 @@ class TicketsController extends Controller
         $user = User::find($request->id);
         
         if($user){
-            if($user->rol_id!=0)
-                $tickets = Ticket::where('owner_id' , $user->id)->orderBy('created_at','DESC')->get();
-            else
+            if($user->rol_id!=0){
                 $tickets = Ticket::where('owner_id' , $user->id)->orderBy('created_at','DESC')->get();
 
-            if(count($tickets)>0){
-                foreach($tickets as $t){
-                    $t->creator = User::find($t->owner_id);
-                    $t->sender = User::find($t->user_id);
+                if(count($tickets)>0){
+                    foreach($tickets as $t){
+                        $t->creator = User::find($t->owner_id);
+                        $t->sender = User::find($t->user_id);
 
-                    if($t->ticket_id == 0)
-                        $t->thread = Ticket::where('ticket_id',$t->id)->first();
-                        
+                        if($t->ticket_id == 0)
+                            $t->thread = Ticket::where('ticket_id',$t->id)->first();
+                    } 
                 }
-                    
+
+
+            }
+            else{
+                $tickets = Ticket::where('ticket_id','0')->orderBy('created_at','DESC')->get();
+        
+                if(count($tickets)>0){
+                    foreach($tickets as $t){
+                        $t->creator = User::find($t->owner_id);
+                        $t->sender = User::find($t->user_id);
+
+                        if($t->ticket_id == 0)
+                            $t->thread = Ticket::where('ticket_id',$t->id)->first();
+                    }   
+                }
+
             }
 
                 return response()->json([
@@ -47,10 +60,8 @@ class TicketsController extends Controller
                     ]);
         }else{
             return response()->json([
-                'success' => false,
-                'msj'     => 'Usuario no encontrado',
-                'id' => $request->id,
-                'req' => $request
+                    'success' => false,
+                    'msj'     => 'Usuario no encontrado'
                 ]);
         }
         
@@ -120,30 +131,51 @@ class TicketsController extends Controller
         $ticket_id        = $request->ticket_id;
         $rol              = $request->rol;
 
-        $rules = [
-            'subject'          => 'required',
-            'content'          => 'required',
+        if($request->rol == 0){
+            $rules = [
+                'content'          => 'required',
 
-            'user_id'          => 'required|integer',
-            'owner_id'         => 'required|integer',
-            'ticket_id'        => 'required|integer',
-            'rol'              => 'required|integer'
-            
-        ]; 
+                'user_id'          => 'required|integer',
+                'owner_id'         => 'required|integer',
+                'ticket_id'        => 'required|integer'
+            ];
 
-        $messages = [
-            'subject.required'      => 'Indica un asunto para el ticket',
-            'content.required'      => 'Ingresa un comentario',
+            $messages = [
+                'content.required'      => 'Ingresa un comentario',
 
-            'user_id'               =>'Error al enviar ticket',
-            'user_id'               =>'Error al enviar ticket',
-            'owner_id'              =>'Error al enviar ticket',
-            'owner_id'              =>'Error al enviar ticket',
-            'ticket_id'             =>'Error al enviar ticket',
-            'ticket_id'             =>'Error al enviar ticket',
-            'rol'                   =>'Error al enviar ticket',
-            'rol'                   =>'Error al enviar ticket'
-        ];
+                'user_id.required'      =>'Error al enviar ticket1',
+                'user_id.integer'       =>'Error al enviar ticket2',
+                'owner_id.required'     =>'Error al enviar ticket3',
+                'owner_id.integer'      =>'Error al enviar ticket4',
+                'ticket_id.required'    =>'Error al enviar ticket5',
+                'ticket_id.integer'     =>'Error al enviar ticket6'
+            ];
+
+        }else{
+           $rules = [
+                'subject'          => 'required',
+                'content'          => 'required',
+
+                'user_id'          => 'required|integer',
+                'owner_id'         => 'required|integer',
+                'ticket_id'        => 'required|integer'
+            ];
+
+
+            $messages = [
+                'subject.required'      => 'Indica un asunto para el ticket',
+                'content.required'      => 'Ingresa un comentario',
+
+                'user_id.required'      =>'Error al enviar ticket1',
+                'user_id.integer'       =>'Error al enviar ticket2',
+                'owner_id.required'     =>'Error al enviar ticket3',
+                'owner_id.integer'      =>'Error al enviar ticket4',
+                'ticket_id.required'    =>'Error al enviar ticket5',
+                'ticket_id.integer'     =>'Error al enviar ticket6'
+            ];
+
+
+        }
 
         $valide = Validator::make($input , $rules , $messages);
 
@@ -177,12 +209,33 @@ class TicketsController extends Controller
                 
 
             }else{
-                //admin es rol = 0
-                return response()->json([
-                    'success'   => true,
-                    'msj'       => 'Esto sera para cuando un admin responda un ticket',
-                    'type'      => 1
-                ]);
+                $ticket = new Ticket;
+
+                    $ticket->subject        = 'Respuesta';
+                    $ticket->content        = $content;
+
+                    $ticket->user_id        = $user_id;
+                    $ticket->owner_id       = $owner_id;
+                    $ticket->ticket_id      = $ticket_id;
+                    $ticket->status         = 0;
+
+
+                if($ticket->save()){
+                    $thread = Ticket::find($ticket->ticket_id);
+
+                    if($thread){
+                        $thread->status = 1;
+                        $thread->save();
+                    }
+
+                    return response()->json([
+                        'success'   => true,
+                        'msj'       => 'Respuesta enviada',
+                        'type'      => 1
+                    ]);
+                }
+
+
             }
 
         }
