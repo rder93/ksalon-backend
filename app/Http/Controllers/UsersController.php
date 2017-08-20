@@ -10,6 +10,8 @@ use App\Models\User;
 
 use App\Models\Lounge;
 
+use App\Models\Score;
+
 use Validator;
 
 use Illuminate\Validation\Rule;
@@ -67,11 +69,19 @@ class UsersController extends Controller
         // $username = $request->username;
         $email    = $request->email;
         $password = $request->password;
-        $rol_id   = $request->rol_id['id'];
+        $rol_id   = $request->rol_id;
         $paypal   = $request->paypal;
         $passport = $request->passport;
         $latitud  = $request->latitud;
         $longitud = $request->longitud;
+
+        if ($request['categoria']) {
+            $rol_id=$request['categoria'];
+        }
+        // return response()->json([
+        //         'success' => true,
+        //         'msj'     => $request->all()
+        //     ]);
 
         $rules = [
             'name'     => 'required|alpha',
@@ -187,6 +197,18 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user=User::FindOrFail($id);
+
+        if($user){
+            $ratings = Score::where('user_to_id',$user->id)->get();
+
+            if(count($ratings)>0){
+                foreach($ratings as $rating){
+                    $rating->creator = User::find($rating->user_id);
+                }
+            }
+            $user->ratings = $ratings;
+        }
+
         return response()->json($user->toArray());
     }
 
@@ -351,7 +373,7 @@ class UsersController extends Controller
             $request->file("foto")->move('imagenes',$nombre);
         }
         else{
-            $nombre= $request['foto'];
+            $nombre= $request['avatar'];
         }
         $usuario = User::FindOrFail($request['id']);
         $input = ([
@@ -359,6 +381,7 @@ class UsersController extends Controller
                     'avatar'   => $nombre,
                     'email' => $request['email'],
                     'dni' => $request['dni'],
+                    'passport' => $request['passport'],
                     'paypal' => $request['paypal'],
                 ]);
         $usuario->fill($input)->save();

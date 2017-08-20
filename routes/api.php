@@ -48,6 +48,7 @@ Route::resource('professionalCombos', 'ProfessionalComboController');
 Route::resource('detailProfessionalCombo', 'DetailProfessionalComboController');
 
 
+Route::get('/roles','RolController@roles');
 
 Route::get('/transaccion/{id}','TransactionsController@show');
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
@@ -58,6 +59,7 @@ Route::post('updateProfessional','ProfessionalController@updateProfessional');
 Route::post('updateCertificate','CertificateController@updateCertificate');
 Route::post('updateUser','UsersController@updateUser');
 Route::post('updateService','LoungeServiceController@updateService');
+Route::post('updateProduct','ProductsController@updateProduct');
 
 Route::post('/users/{id}', 'UsersController@update')->middleware('cors');
 
@@ -80,9 +82,26 @@ Route::get('verServicioIndependiente/{id}', 'IndependentServiceController@verSer
 
 /* BUSCAR QUE LOUNGES REALIZA LOS SERVICIOS */
 Route::get('/buscar_lounges_services', 'LoungeServiceController@buscarLoungesServices');
+Route::get('/buscar_independents_services', 'IndependentServiceController@buscarIndependentsServices');
+
 Route::post('/loungePhotos/{id}', 'LoungePhotoController@update')->middleware('cors');
 
 
 // Para el pago con paypal
 Route::get('/payment', 'PaypalController@payment');
 Route::get('payment/status', 'PaypalController@paymentStatus');
+
+
+
+
+/*Mensajes*/
+Route::get('/user/{id}/messages', 'MessagesController@userMessages');
+// Route::get('/user/{id}/messages', 'MessagesController@userMessages');
+// Route::get('/user/{user_id}/messages/{user_to_id}','MessagesController@conversation');
+
+Route::get('/user/{user_id}/seller/{user_to_id}/messages/{transaction_id}','MessagesController@conversation');
+Route::get('/message','MessagesController@store');
+
+
+
+/*Tickets*/

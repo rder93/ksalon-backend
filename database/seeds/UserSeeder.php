@@ -18,37 +18,49 @@ class UserSeeder extends Seeder
           'name'     => 'Usuario administrador',
           'email'    => 'admin@email.com',
           'password' => bcrypt('12345'),
-          'rol_id'   => 0
+          'rol_id'   => 0,
+          'latitud'  => '8.284305',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'Salones grandes',
           'email'    => 'salongrande@email.com',
           'password' => bcrypt('12345'),
-          'rol_id'   => 1
+          'rol_id'   => 1,
+          'latitud'  => '8.284305',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'Salones pequeños',
           'email'    => 'salonpequeño@email.com',
           'password' => bcrypt('12345'),
-          'rol_id'   => 2
+          'rol_id'   => 2,
+          'latitud'  => '8.284305',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'Profesional independiente',
           'email'    => 'profesional@email.com',
           'password' => bcrypt('12345'),
-          'rol_id'   => 3
+          'rol_id'   => 3,
+          'latitud'  => '8.284305',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'Usuario cliente',
           'email'    => 'cliente@email.com',
           'password' => bcrypt('12345'),
-          'rol_id'   => 4
+          'rol_id'   => 4,
+          'latitud'  => '8.284305',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'ricardo es independiente',
           'email'    => 'independiente@email.com',
           'password' => bcrypt('12345'),
-          'rol_id'   => 3
+          'rol_id'   => 3,
+          'latitud'  => '8.284305',
+          'longitud'  => '-62.754250',
         ],
       ];
 

@@ -8,7 +8,7 @@ use App\Models\Service;
 
 class LoungeService extends Model
 {
-    protected $fillable = ['lounge_id','service_id','precio','foto'];
+    protected $fillable = ['lounge_id','service_id','precio','descripcion','foto'];
 
     protected $table= 'lounges_services';
     protected $primarykey = 'id';
@@ -23,3 +23,4 @@ class LoungeService extends Model
         return $this->belongsTo(Service::class);
     }
 }
+

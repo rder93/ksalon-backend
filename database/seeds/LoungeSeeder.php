@@ -17,7 +17,7 @@ class LoungeSeeder extends Seeder
                 'nombre'      => 'Peluqueria 1',
                 'descripcion'    => "En Ricky's Styles nos orgullecemos de brindar el mejor servicio para su cabello, reserve con nosotros y mismo!",
                 'latitud'     => '8.281954',
-                'altitud'    => '-62.758308',
+                'longitud'    => '-62.758308',
                 'user_id'     => '1',
                 'category_id' => '1'
             ],
@@ -25,7 +25,7 @@ class LoungeSeeder extends Seeder
                 'nombre'      => 'Peluqueria 2',
                 'descripcion'    => "En Ricky's Styles nos orgullecemos de brindar el mejor servicio para su cabello, reserve con nosotros y mismo!",
                 'latitud'     => '8.286307',
-                'altitud'    => '-62.753952',
+                'longitud'    => '-62.753952',
                 'user_id'     => '1',
                 'category_id' => '1'
             ],
@@ -33,7 +33,7 @@ class LoungeSeeder extends Seeder
                 'nombre'      => 'Peluqueria 3',
                 'descripcion'    => "En Ricky's Styles nos orgullecemos de brindar el mejor servicio para su cabello, reserve con nosotros y mismo!",
                 'latitud'     => '8.277822',
-                'altitud'    => '-62.756134',
+                'longitud'    => '-62.756134',
                 'user_id'     => '1',
                 'category_id' => '1'
             ],
@@ -41,7 +41,7 @@ class LoungeSeeder extends Seeder
                 'nombre'      => 'Peluqueria 4',
                 'descripcion'    => "En Ricky's Styles nos orgullecemos de brindar el mejor servicio para su cabello, reserve con nosotros y mismo!",
                 'latitud'     => '8.279181',
-                'altitud'    => '-62.750266',
+                'longitud'    => '-62.750266',
                 'user_id'     => '1',
                 'category_id' => '1'
             ],

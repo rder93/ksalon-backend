@@ -37,14 +37,26 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         try{
-            $lounge = Product::create(
-                $request->all()
-            );
+            $input= $request->all();
+            if ($request->file("foto")) {
+                $aleatorio = str_random(6);
+                $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+                $request->file("foto")->move('imagenes',$nombre);
+            }else{
+                $nombre='no_avatar.jpg';
+            }
+            $product = Product::create([
+                    'nombre' => $input['nombre'],
+                    'precio' => $input['precio'],
+                    'descripcion' => $input['descripcion'],
+                    'foto' => $nombre,
+                    'lounge_id' => $input['lounge_id'],
+            ]);
 
             return response()->json(
                 [
                     'msj'=>'El Producto ha sido creado exitosamente.',
-                    'lounge' => $lounge,
+                    'product' => $product,
                     'code' => 1
                 ]
             );
@@ -52,7 +64,7 @@ class ProductsController extends Controller
             return response()->json(
                 [
                     'msj'=>'Error al crear el Producto.',
-                    'lounge' => $lounge,
+                    'product' => $product,
                     'code' => 0
                 ]
             );
@@ -90,6 +102,36 @@ class ProductsController extends Controller
      * @param  \App\Models\Products  $products
      * @return \Illuminate\Http\Response
      */
+
+
+    public function updateProduct(Request $request)
+    {
+        if ($request->file("foto")) {
+            $aleatorio = str_random(6);
+            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
+            $request->file("foto")->move('imagenes',$nombre);
+        }
+        else{
+            $nombre= $request['foto'];
+        }
+        $product = Product::FindOrFail($request['id']);
+        $input = ([
+                    'nombre' => $request['nombre'],
+                    'precio' => $request['precio'],
+                    'descripcion' => $request['descripcion'],
+                    'foto' => $nombre,
+                    'lounge_id' => $request['lounge_id'],
+        ]);
+        $product->fill($input)->save();
+        return response()->json(
+                [
+                    'msj'=>'El Servicio ha sido actualizado exitosamente.',
+                    'lounge' => $product,
+                    'code' => 1
+                ]
+        );
+    }
+
     public function update(Request $request, $id)
     {
         $producto = Product::FindOrFail($id);

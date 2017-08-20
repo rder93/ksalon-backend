@@ -17,6 +17,7 @@ class CreateLoungesServicesTable extends Migration
             $table->increments('id');
             $table->integer('lounge_id');
             $table->integer('service_id');
+            $table->text('descripcion');
             $table->double('precio');
             $table->string('foto')->nullable()->default('no_photo.png');
             $table->timestamps();

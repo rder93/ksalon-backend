@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Score;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
@@ -21,7 +22,9 @@ class AuthController extends Controller
 		if (!$validator->fails()) {
 
 			if (Auth::attempt(['email' => $request->email, 'password' => $request->password  ])) {
-	            return response()->json(['status' => 'success', 'message' => 'Gracias por iniciar sesion.', 'auth_user' => Auth::user(), 'rol' => Auth::user()->rol_id]);
+				$ratings = Score::where('user_to_id',Auth::user()->id)->get();
+
+	            return response()->json(['status' => 'success', 'message' => 'Gracias por iniciar sesion.', 'auth_user' => Auth::user(), 'rol' => Auth::user()->rol_id,'ratings' => $ratings] );
 	        } else {
 	        	return response()->json(['status' => 'error', 'message' => 'Combinacion email / password incorrecta.']);
 	        }
