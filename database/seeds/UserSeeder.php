@@ -20,7 +20,7 @@ class UserSeeder extends Seeder
           'password' => bcrypt('12345'),
           'rol_id'   => 0,
           'latitud'  => '8.284305',
-          'altitud'  => '-62.754250',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'Salones grandes',
@@ -28,7 +28,7 @@ class UserSeeder extends Seeder
           'password' => bcrypt('12345'),
           'rol_id'   => 1,
           'latitud'  => '8.284305',
-          'altitud'  => '-62.754250',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'Salones pequeños',
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
           'password' => bcrypt('12345'),
           'rol_id'   => 2,
           'latitud'  => '8.284305',
-          'altitud'  => '-62.754250',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'Profesional independiente',
@@ -44,7 +44,7 @@ class UserSeeder extends Seeder
           'password' => bcrypt('12345'),
           'rol_id'   => 3,
           'latitud'  => '8.284305',
-          'altitud'  => '-62.754250',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'Usuario cliente',
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
           'password' => bcrypt('12345'),
           'rol_id'   => 4,
           'latitud'  => '8.284305',
-          'altitud'  => '-62.754250',
+          'longitud'  => '-62.754250',
         ],
         [
           'name'     => 'ricardo es independiente',
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
           'password' => bcrypt('12345'),
           'rol_id'   => 3,
           'latitud'  => '8.284305',
-          'altitud'  => '-62.754250',
+          'longitud'  => '-62.754250',
         ],
       ];
 

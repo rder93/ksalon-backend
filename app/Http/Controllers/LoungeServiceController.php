@@ -55,6 +55,7 @@ class LoungeServiceController extends Controller
                 'lounge_id' => $input['lounge_id'],
                 'service_id' => $input['service_id'],
                 'precio' => $input['precio'],
+                'descripcion' => $input['descripcion'],
                 'foto' => $nombre,
             ]);
 

@@ -18,6 +18,7 @@ class CreateProductsTable extends Migration
             $table->string('nombre');
             $table->float('precio');
             $table->string('descripcion');
+            $table->string('foto')->nullable()->default('no_photo.png');
             $table->integer('lounge_id')->unsigned();
             $table->timestamps();
             $table->foreign('lounge_id')->references('id')->on('lounges');

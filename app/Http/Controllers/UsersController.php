@@ -63,6 +63,8 @@ class UsersController extends Controller
         $email    = $request->email;
         $password = $request->password;
         $rol_id   = $request->rol_id;
+        $passport = $request->passport;
+        $paypal = $request->paypal;
         if ($request['categoria']) {
             $rol_id=$request['categoria'];
         }
@@ -123,6 +125,8 @@ class UsersController extends Controller
             if ($request->file("foto")) {
                 $user->avatar= $nombre;
             }
+            $user->passport= $passport;
+            $user->paypal= $paypal;
 
 
             if ($user->save()) {
@@ -482,7 +486,7 @@ class UsersController extends Controller
             $request->file("foto")->move('imagenes',$nombre);
         }
         else{
-            $nombre= $request['foto'];
+            $nombre= $request['avatar'];
         }
         $usuario = User::FindOrFail($request['id']);
         $input = ([
@@ -490,6 +494,7 @@ class UsersController extends Controller
                     'avatar'   => $nombre,
                     'email' => $request['email'],
                     'dni' => $request['dni'],
+                    'passport' => $request['passport'],
                     'paypal' => $request['paypal'],
                 ]);
         $usuario->fill($input)->save();
