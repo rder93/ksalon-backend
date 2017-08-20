@@ -52,6 +52,8 @@ Route::resource('detailProfessionalCombo', 'DetailProfessionalComboController');
 Route::get('/transaccion/{id}','TransactionsController@show');
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
 
+Route::get('/showSalones/','UsersController@showSalones');
+
 Route::post('updateProfessional','ProfessionalController@updateProfessional');
 Route::post('updateCertificate','CertificateController@updateCertificate');
 Route::post('updateUser','UsersController@updateUser');
