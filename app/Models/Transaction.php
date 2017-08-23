@@ -15,6 +15,11 @@ class Transaction extends Model
 		return $this->belongsTo(User::class);
 	}
 
+	public function user_to_id()
+	{
+		return $this->belongsTo(User::class);
+	}
+
 	public function score()
 	{
 		return $this->hasOne(Score::class);
