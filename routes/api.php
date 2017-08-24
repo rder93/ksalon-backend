@@ -84,6 +84,10 @@ Route::get('verServicioIndependiente/{id}', 'IndependentServiceController@verSer
 Route::get('/buscar_lounges_services', 'LoungeServiceController@buscarLoungesServices');
 Route::get('/buscar_independents_services', 'IndependentServiceController@buscarIndependentsServices');
 
+/* PARA BUSCAR TODA LA INFO DEL SALON, DATOS, SERVICIOS, COMENTARIOS, FOTOS*/
+Route::get('/all_lounge/{lounge_id}', 'LoungeController@all_lounge');
+
+
 Route::post('/loungePhotos/{id}', 'LoungePhotoController@update')->middleware('cors');
 
 

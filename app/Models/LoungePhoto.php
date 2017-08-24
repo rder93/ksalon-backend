@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Lounge;
+
 class LoungePhoto extends Model
 {
     protected $fillable = ['foto','lounge_id'];

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Category;
 use App\Models\Combo;
+use App\Models\LoungePhoto;
+use App\Models\LoungeService;
 use App\Models\Product;
 use App\Models\Professional;
 use App\Models\Service;
@@ -30,5 +32,9 @@ class Lounge extends Model
 
     public function services(){
     	return $this->belongsToMany(Service::class);
+    }
+
+    public function photos(){
+        return $this->hasMany(LoungePhoto::class);
     }
 }
