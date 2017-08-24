@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// use App\Models\Transactions;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -22,7 +21,7 @@ class TransactionsController extends Controller
 
         if($user){
             if($user->rol_id != 0){
-                // $transactions = Transaction::where('buyer_id',$id)->orWhere('seller_id',$id)->orderBy('created_at','DESC')->get();
+
                 if($user->rol_id==4)
                     $transactions = Transaction::where('user_id',$user->id)->orderBy('created_at','DESC')->get();
                 else if($user->rol_id!=0 && $user->rol_id!=4)
@@ -53,10 +52,15 @@ class TransactionsController extends Controller
                 ]);
 
             }else{
-                return response()->json([
-                    'success' => true,
-                    'msj'     => 'Para cuando sea admin'
-                ]);
+
+                $transactions = Transaction::all();
+        
+                for ($i=0; $i < count($transactions); $i++) { 
+                    $transactions[$i]['cliente'] = User::find($transactions[$i]['user_id']);
+                    $transactions[$i]['vendedor'] = User::find($transactions[$i]['user_to_id']);
+                }
+
+                return response()->json($transactions->toArray());
             }
 
                 
@@ -66,6 +70,19 @@ class TransactionsController extends Controller
                 'msj'     => 'Usuario no encontrado'
             ]);
         }
+    }
+
+    public function indexAdmin()
+    {
+        $transactions = Transaction::all();
+        
+        for ($i=0; $i < count($transactions); $i++) { 
+            $transactions[$i]['cliente'] = User::find($transactions[$i]['user_id']);
+            $transactions[$i]['vendedor'] = User::find($transactions[$i]['user_to_id']);
+        }
+
+        return response()->json($transactions->toArray());
+
     }
 
     /**
