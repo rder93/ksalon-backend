@@ -3,19 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Requests;
 
+use App\Models\IndependentService;
+use App\Models\Lounge;
+use App\Models\Score;
 use App\Models\User;
 
-use App\Models\Lounge;
-
-use App\Models\Score;
-
 use Validator;
-
 use Illuminate\Validation\Rule;
-
 use DB;
 
 class UsersController extends Controller
@@ -495,5 +491,47 @@ class UsersController extends Controller
             'success' => true,
             'msj'     => 'Usuario eliminado exitosamente'
         ]);
+    }
+
+    public function all_independent($user_id)
+    {
+
+/*
+        $independent =  DB::table('users')
+                        ->select('users.id', 'users.name as nombre', 'lounges.latitud', 'lounges.longitud', 'lounges.created_at', 'lounges.updated_at')
+                        ->where('users.id', $user_id)
+                        ->first();
+*/
+
+        $independent = User::find($user_id);
+
+        /* OBTENIENDO LOS COMENTARIOS DEL SALON */
+        $transactions = $independent->transactions;
+        $comments = [];
+
+        $services = IndependentService::where('user_id',$user_id)
+                    ->join('services', 'services.id', '=','independents_services.service_id')
+                    ->get();
+
+
+        if($transactions){
+            for($i=0; $i < sizeof($transactions); $i++) {
+                $comments[] = $transactions[$i]->score;
+            }
+        } else{
+            $comments = [];
+        }
+
+        /* OBTENIENDO LOS SERVICIOS DEL INDEPENDIENTE */
+        return response()->json(
+                [
+                    "comments"      => $comments,
+                    "independent"   => $independent,
+                    "services"      => $services,
+                    "code"          => 1
+                ],
+                200
+                );
+            
     }
 }

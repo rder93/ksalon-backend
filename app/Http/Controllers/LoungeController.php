@@ -174,7 +174,7 @@ class LoungeController extends Controller
         /* OBTENIENDO LAS FOTOS DEL SALON */
         $photos = Lounge::find($lounge->id)->photos;
 
-        /* OBTENIENDO LAS FOTOS DEL SALON */
+        /* OBTENIENDO LOS SERVICIOS DEL SALON */
         $services = LoungeService::where('lounge_id',$lounge_id)
                     ->join('services', 'services.id', '=','lounges_services.service_id')
                     ->get();

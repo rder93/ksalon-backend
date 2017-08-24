@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Independent;
+use App\Models\IndependentService;
 use App\Models\Lounge;
 use App\Models\Rol;
 use App\Models\Transaction;
@@ -94,5 +95,10 @@ class User extends Authenticatable
     public function transactions()
     {
         return $this->hasMany(Transaction::class);
+    }
+
+    public function services()
+    {
+        return $this->hasMany(IndependentService::class);
     }
 }

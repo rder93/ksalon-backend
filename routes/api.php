@@ -87,6 +87,7 @@ Route::get('/buscar_independents_services', 'IndependentServiceController@buscar
 
 /* PARA BUSCAR TODA LA INFO DEL SALON, DATOS, SERVICIOS, COMENTARIOS, FOTOS*/
 Route::get('/all_lounge/{lounge_id}', 'LoungeController@all_lounge');
+Route::get('/all_independent/{user_id}', 'UsersController@all_independent');
 
 
 Route::post('/loungePhotos/{id}', 'LoungePhotoController@update')->middleware('cors');
