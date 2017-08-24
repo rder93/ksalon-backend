@@ -49,6 +49,7 @@ Route::resource('detailProfessionalCombo', 'DetailProfessionalComboController');
 
 
 Route::get('/roles','RolController@roles');
+// Route::get('/transactionsAdmin','TransactionsController@indexAdmin')->middleware('cors');
 
 Route::get('/transaccion/{id}','TransactionsController@show');
 Route::get('verServicioProfesional/{id?}', 'LoungeServiceController@verServicioProfesional');
