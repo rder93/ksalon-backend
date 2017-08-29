@@ -46,6 +46,7 @@ Route::resource('certificates', 'CertificateController');
 Route::resource('detailLoungeCombo', 'DetailLoungeComboController');
 Route::resource('professionalCombos', 'ProfessionalComboController');
 Route::resource('detailProfessionalCombo', 'DetailProfessionalComboController');
+Route::resource('professionalServices', 'ProfessionalServiceController');
 
 
 Route::get('/roles','RolController@roles');

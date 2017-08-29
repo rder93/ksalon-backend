@@ -152,16 +152,17 @@ class LoungeController extends Controller
     public function all_lounge($lounge_id)
     {
         
-        
         $lounge =   DB::table('lounges')
                     ->select('lounges.id', 'lounges.nombre', 'lounges.descripcion', 'lounges.latitud', 'lounges.longitud', 'lounges.user_id', 'lounges.category_id', 'lounges.created_at', 'lounges.updated_at', 'categories.nombre as nombre_categoria', 'users.name as nombre_usuario')
                     ->join('categories', 'lounges.category_id', '=', 'categories.id')
                     ->join('users', 'lounges.user_id', '=', 'users.id')
                     ->where('lounges.id', $lounge_id)
                     ->first();
+        // dd($lounge->user_id);
 
         /* OBTENIENDO LOS COMENTARIOS DEL SALON */
-        $transactions = Lounge::find($lounge->user_id)->transactions;
+        // $transactions = Lounge::find($lounge->user_id)->transactions;
+        $transactions=null;
         $comments = [];
         if($transactions){
             for($i=0; $i < sizeof($transactions); $i++) {

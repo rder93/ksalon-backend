@@ -3,16 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Http\Requests;
 
-use App\Models\IndependentService;
-use App\Models\Lounge;
-use App\Models\Score;
 use App\Models\User;
 
+use App\Models\Lounge;
+
 use Validator;
+
 use Illuminate\Validation\Rule;
-use DB;
+
 
 class UsersController extends Controller
 {
@@ -46,12 +47,6 @@ class UsersController extends Controller
     public function store(Request $request)
     {
         
-        // return response()->json([
-        //     'success' => true,
-        //     'msj'     => 'Registro exitoso',
-        //     'user_data' => $request->rol_id['id']
-        // ]);
-
         if ($request->file("foto")) {
             $aleatorio = str_random(6);
             $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
@@ -66,13 +61,8 @@ class UsersController extends Controller
         $email    = $request->email;
         $password = $request->password;
         $rol_id   = $request->rol_id;
-        $paypal   = $request->paypal;
-        $passport = $request->passport;
-        $latitud  = $request->latitud;
-        $longitud = $request->longitud;
-
         if ($request['categoria']) {
-            $rol_id=$request['categoria'];
+            $rol_id=$request['categoria']+1;
         }
         // return response()->json([
         //         'success' => true,
@@ -83,11 +73,18 @@ class UsersController extends Controller
             'name'     => 'required|alpha',
             'email'    => 'required|unique:users',
             'password' => 'required',
-            'dni'      => 'numeric',
-            'passport' => 'alpha_num',
-            'paypal'   => 'required',
-            'rol_id'   => 'required'
+            
         ];
+
+
+        // $rules = [
+        //     'name'     => 'required|alpha',
+        //     'surname'  => 'required|alpha',
+        //     'username' => 'required|unique:users',
+        //     'email'    => 'required|unique:users',
+        //     'password' => 'required',
+        //     'rol'      => 'required',
+        // ];
 
         $messages = [
             'name.required'      => 'Ingresa tu nombre',
@@ -97,12 +94,10 @@ class UsersController extends Controller
             'username.required'  => 'Ingresa tu nombre de usuario',
             'username.unique'    => 'Ya existe una cuenta asociada a este nombre de usuario',
             'email.required'     => 'Ingresa tu email',
-            'email.unique'       => 'Ya existe una cuenta asociada a '.$email,
+            'email.unique'       => 'Ya existe una cuenta asociada a este email',
             'password.required'  => 'Ingresa tu contraseña',
-            'rol_id.required'    => 'Ingresa tu tipo de perfil',
-            'dni.numeric'        => 'El DNI debe tener solo numeros',
-            'passport.alpha_num' => 'El pasaporte debe tener solo letras y numeros',
-            'paypal.required'    => 'Ingresa tu correo de PayPal'
+            'password.confirmed' => 'Las contraseñas no coinciden',
+            'rol_id.required'       => 'Ingresa tu tipo de perfil',
         ];
 
         $valide = Validator::make($input , $rules , $messages);
@@ -110,7 +105,6 @@ class UsersController extends Controller
         if ($valide->fails()) {
             return response()->json([
                 'success' => false,
-                'user_data' => $input,
                 'msj'     => $valide->errors()->first()
             ]);
         }else{
@@ -124,17 +118,28 @@ class UsersController extends Controller
             $user->password =  bcrypt($password);
             $user->rol_id   = $rol_id;
             $user->status   = 1;
-            $user->paypal   = $paypal;
-            $user->passport = $passport;
-            $user->latitud  = $latitud;
-            $user->longitud = $longitud;
-
             if ($request->file("foto")) {
                 $user->avatar= $nombre;
             }
 
 
-            if ($user->save()) {  
+            if ($user->save()) {
+                // if($request['categoria']==1 || $request['categoria']==2){
+                //     $categoria=$request['categoria'];
+                //     $lounge= new Lounge;
+                //     $lounge->user_id=$user->id;
+                //     $lounge->category_id=$categoria;
+                //     if ($lounge->save()) {
+                //         return response()->json([
+                //             'success' => true,
+                //             'msj'     => 'Registro exitoso',
+                //             'user_data' => $user,
+                //             'lounge' => $lounge,
+                //             'route' => 'register'
+                //             ]);
+                //     }
+                // }
+                
                 return response()->json([
                     'success' => true,
                     'msj'     => 'Registro exitoso',
@@ -171,18 +176,7 @@ class UsersController extends Controller
                 'msj'     => 'Usuario no encontrado'
             ]);
         }
-    }
-
-    public function showSalones()
-    {
-
-        $salones = DB::table('users')
-                    ->whereIn('rol_id', [1, 2])
-                    ->get();
-
-        // $salones = User::where('rol_id', [1,2])->get();
-        return response()->json($salones->toArray());
-    }
+    } 
 
     /**
      * Show the form for editing the specified resource.
@@ -193,18 +187,6 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user=User::FindOrFail($id);
-
-        if($user){
-            $ratings = Score::where('user_to_id',$user->id)->get();
-
-            if(count($ratings)>0){
-                foreach($ratings as $rating){
-                    $rating->creator = User::find($rating->user_id);
-                }
-            }
-            $user->ratings = $ratings;
-        }
-
         return response()->json($user->toArray());
     }
 
@@ -278,52 +260,73 @@ class UsersController extends Controller
     public function update(Request $request, $id)
     {
 
+        // Los formularios de edicion deben mandar a esta ruta, para validar si es el admin o el usuario el que esta editando agregar un input con el name del rol del usuario que esta editando 'admin' , 'client' , 'renter' , 'transport' , 'driver' y asi se puede reutilizar el formulario dependiendo el caso
+
+        // Los nombres para los input donde estaran los documentos que se vallan a pasar son 'img_dni' => 'Archico para referirse al dni del usuario', 'img_lic' => 'Archivo para referirse a la licencia de conducir del usuario' , 'img_insure' => 'Archivo para referirse al seguro de automovil del usuario' , 'img_healt' => 'Archivo para referirse al seguro medico del usuario' , 'avatar' => 'Imagen de perfil del usuario'
+        $input = $request->all();
+
+
         // return response()->json([
         //     'success' => false,
         //     'response' => $input
         // ]);
 
-        if ($request->file("foto")) {
-            $aleatorio = str_random(6);
-            $nombre = $aleatorio.'-'.$request->file("foto")->getClientOriginalName();
-            $request->file("foto")->move('imagenes',$nombre);
-        }
-
-
         $input          = $request->all();
         $user           = User::find($id);
         $name           = $request->name;
-        $avatar         = $request->avatar;
+        // $surname        = $request->surname;
+        // $username       = $request->username;
+        // $avatar         = $request->avatar;
         $email          = $request->email;
+        // $comission      = $request->comission;
         $dni            = $request->dni;
-        $passport       = $request->passport;
-        $paypal         = $request->paypal;
+        // $driver_license = $request->driver_license;
+        // $passport       = $request->passport;
+        // $insure         = $request->insure;
+        // $paypal         = $request->paypal;
+        // $healt_insure   = $request->healt_insure;
+        // $img_dni        = $request->img_dni;
+        // $img_lic        = $request->img_lic;
+        // $img_insure     = $request->img_insure;
+        // $img_healt      = $request->img_healt;
+        // $destiny        = base_path() . '/public/uploads';
+        // $admin          = $request->admin;
         $status         = $request->status;
 
         $rules = [
-            'name'     => 'required|alpha',
-            'email'    => 'required|unique:users',
-            'password' => 'required',
-            'dni'      => 'numeric',
-            'passport' => 'alpha_num',
-            'paypal'   => 'required',
-            'rol_id'   => 'required'
+            'name'           => 'required_without:admin|alpha',
+            // 'surname'        => 'required_without:admin|alpha',
+            // 'username'       => ['required_without:admin' , Rule::unique('users')->ignore($user->username)],
+            'email'          => 'required|email',
+            'email'          => 'unique:users,email,'.$user->id,
+            // 'email'          => ['required_without:admin' , Rule::unique('users')->ignore($user->email)],
+            // 'comission'      => 'numeric',
+            'dni'            => 'required_without:admin|numeric',
+            // 'driver_license' => 'required_without:client,admin|',
+            // 'insure'         => 'required_without:client,admin',
+            // 'paypal'         => 'required_without:admin|email',
+            // 'healt_insure'   => 'required_without:admin,renter',
         ];
 
         $messages = [
-            'name.required'      => 'Ingresa tu nombre',
-            'name.alpha'         => 'Tu nombre debe tener solo letras',
-            'surname.required'   => 'Ingresa tu apellido',
-            'surname.alpha'      => 'Tu apellido debe tener solo letras',
-            'username.required'  => 'Ingresa tu nombre de usuario',
-            'username.unique'    => 'Ya existe una cuenta asociada a este nombre de usuario',
-            'email.required'     => 'Ingresa tu email',
-            'email.unique'       => 'Ya existe una cuenta asociada a '.$email,
-            'password.required'  => 'Ingresa tu contraseña',
-            'rol_id.required'    => 'Ingresa tu tipo de perfil',
-            'dni.numeric'        => 'El DNI debe tener solo numeros',
-            'passport.alpha_num' => 'El pasaporte debe tener solo letras y numeros',
-            'paypal.required'    => 'Ingresa tu correo de PayPal'
+            'name.required_without'           => 'Ingresa tu nombre',
+            'name.alpha'                      => 'Tu nombre debe tener solo letras',
+            // 'surname.required_without'        => 'Ingresa tu apellido',
+            // 'surname.alpha'                   => 'Tu apellido debe tener solo letras',
+            // 'username.required_without'       => 'Ingresa tu nombre de usuario',
+            // 'username.unique'                 => 'Ya existe una cuenta asociada a este nombre de usuario',
+            'email.required'                  => 'Ingresa tu email',
+            'email.unique'                    => 'Ya existe una cuenta asociada a este email',
+            'email.email'                     => 'Tu email debe tener una estructura de email valida',
+            // 'comission.required_wit'          => 'Ingresa la comision a descontar a este usuario (En porcentaje)',
+            // 'comission.numeric'               => 'La comision a descontar debe tener solo numeros',
+            'dni.required_without'            => 'Ingresa tu dni',
+            'dni.numeric'                     => 'Tu dni debe tener solo numeros',
+            // 'driver_license.required_without' => 'Ingresa tu numero de licencia de conducir',
+            // 'insure.required_without'         => 'Ingresa el numero de tu seguro de auto',
+            // 'paypal.required_without'         => 'Ingresa tu cuenta paypal',
+            // 'paypal.email'                    => 'Tu cuenta paypal debe tener una estructura de email valida',
+            // 'healt_insure.required_without'   => 'Ingresa el numero de tu seguro medico',
         ];
 
         $valide = Validator::make($input , $rules , $messages);
@@ -335,29 +338,125 @@ class UsersController extends Controller
             ]);
         }else{
 
-            $user->name         = $name;
-            $user->email        = $email;
-            $user->dni          = $dni;
-            $user->paypal       = $paypal;
-            $user->passport     = $passport;
-           
-            if ($request->file("foto")) {
-                $user->avatar= $nombre;
-            }
+            // if (isset($admin)) {
+            //     if ($comission != null || $comission != '') {
+            //         $user->comission = $comission;
+            //     }
+            //     if ($status != null || $status != '') {
+            //         $user->status = $status;
+            //     }
 
-            if ($user->save()) {
-                return response()->json([
-                    'success'   => true,
-                    'msj'       => 'Perfil actualizado exitosamente...',
-                    'user_data' => $user
-                ]);
-            }else{
-                return response()->json([
-                    'success'   => true,
-                    'msj'       => 'Error al actualizar'
-                ]);
+            //     if ($user->save()) {
+            //         return response()->json([
+            //             'success'   => true,
+            //             'msj'       => 'Perfil actualizado exitosamente',
+            //             'user_data' => $user
+            //         ]);
+            //     }else{
+            //         return response()->json([
+            //             'success'   => true,
+            //             'msj'       => 'Error al actualizar'
+            //         ]);
+            //     }
+            // }else{
+                $user->name         = $name;
+                // $user->surname      = $surname;
+                // $user->username     = $username;
+                $user->email        = $email;
+                $user->dni          = $dni;
+                // $user->paypal       = $paypal;
+                // $user->healt_insure = $healt_insure;
+                // if ($driver_license != null || $driver_license != '') {
+                //     $user->driver_license = $driver_license;
+                // }
+                // if ($passport != null || $passport != '') {
+                //     $user->passport = $passport;
+                // }
+                // if ($insure != null || $insure != '') {
+                //     $user->insure = $insure;
+                // }
+                // if ($avatar != null) {
+                //     $n_f = md5(rand(1000 , 9000)).'.'.$avatar->getClientOriginalExtension();
+                //     if ($user->avatar != null || $user->avatar != '') {
+                //         unlink($destiny.'/avatars/'.$user->avatar);
+                //     }
+                //     $avatar->move($destiny.'/avatars' , $n_f);
+                //     $user->avatar = $avatar;
+                // }
+
+                // if ($img_dni != null) {
+                //     $n_f  = md5(rand(1000 , 9000)).'.'.$img_dni->getClientOriginalExtension();
+                //     $prev = Image::where('user_id' , $user->id)->where('description' , 'dni')->first();
+                //     if ($prev) {
+                //         unlink($destiny.'/images/'.$prev->name);
+                //         $prev->delete();
+                //     }
+                //     $img              = new Image;
+                //     $img->user_id     = $user->id;
+                //     $img->description = 'dni';
+                //     if ($img->save()) {
+                //         $img_dni->move($destiny.'/files' , $n_f);
+                //     }
+                // }
+
+                // if ($img_lic != null) {
+                //     $n_f  = md5(rand(1000 , 9000)).'.'.$img_lic->getClientOriginalExtension();
+                //     $prev = Image::where('user_id' , $user->id)->where('description' , 'driver')->first();
+                //     if ($prev) {
+                //         unlink($destiny.'/images/'.$prev->name);
+                //         $prev->delete();
+                //     }
+                //     $img              = new Image;
+                //     $img->user_id     = $user->id;
+                //     $img->description = 'driver';
+                //     if ($img->save()) {
+                //         $img_lic->move($destiny.'/files' , $n_f);
+                //     }
+                // }
+
+                // if ($img_insure != null) {
+                //     $n_f  = md5(rand(1000 , 9000)).'.'.$img_insure->getClientOriginalExtension();
+                //     $prev = Image::where('user_id' , $user->id)->where('description' , 'insure')->first();
+                //     if ($prev) {
+                //         unlink($destiny.'/images/'.$prev->name);
+                //         $prev->delete();
+                //     }
+                //     $img              = new Image;
+                //     $img->user_id     = $user->id;
+                //     $img->description = 'insure';
+                //     if ($img->save()) {
+                //         $img_insure->move($destiny.'/files' , $n_f);
+                //     }
+                // }
+
+                // if ($img_healt != null) {
+                //     $n_f  = md5(rand(1000 , 9000)).'.'.$img_healt->getClientOriginalExtension();
+                //     $prev = Image::where('user_id' , $user->id)->where('description' , 'healt')->first();
+                //     if ($prev) {
+                //         unlink($destiny.'/images/'.$prev->name);
+                //         $prev->delete();
+                //     }
+                //     $img              = new Image;
+                //     $img->user_id     = $user->id;
+                //     $img->description = 'healt';
+                //     if ($img->save()) {
+                //         $img_healt->move($destiny.'/files' , $n_f);
+                //     }
+                // }
+
+                if ($user->save()) {
+                    return response()->json([
+                        'success'   => true,
+                        'msj'       => 'Perfil actualizado exitosamente',
+                        'user_data' => $user
+                    ]);
+                }else{
+                    return response()->json([
+                        'success'   => true,
+                        'msj'       => 'Error al actualizar'
+                    ]);
+                }
             }
-        }
         // }
     }
 
@@ -369,7 +468,7 @@ class UsersController extends Controller
             $request->file("foto")->move('imagenes',$nombre);
         }
         else{
-            $nombre= $request['avatar'];
+            $nombre= $request['foto'];
         }
         $usuario = User::FindOrFail($request['id']);
         $input = ([
@@ -377,7 +476,6 @@ class UsersController extends Controller
                     'avatar'   => $nombre,
                     'email' => $request['email'],
                     'dni' => $request['dni'],
-                    'passport' => $request['passport'],
                     'paypal' => $request['paypal'],
                 ]);
         $usuario->fill($input)->save();
@@ -491,47 +589,5 @@ class UsersController extends Controller
             'success' => true,
             'msj'     => 'Usuario eliminado exitosamente'
         ]);
-    }
-
-    public function all_independent($user_id)
-    {
-
-/*
-        $independent =  DB::table('users')
-                        ->select('users.id', 'users.name as nombre', 'lounges.latitud', 'lounges.longitud', 'lounges.created_at', 'lounges.updated_at')
-                        ->where('users.id', $user_id)
-                        ->first();
-*/
-
-        $independent = User::find($user_id);
-
-        /* OBTENIENDO LOS COMENTARIOS DEL SALON */
-        $transactions = $independent->transactions;
-        $comments = [];
-
-        $services = IndependentService::where('user_id',$user_id)
-                    ->join('services', 'services.id', '=','independents_services.service_id')
-                    ->get();
-
-
-        if($transactions){
-            for($i=0; $i < sizeof($transactions); $i++) {
-                $comments[] = $transactions[$i]->score;
-            }
-        } else{
-            $comments = [];
-        }
-
-        /* OBTENIENDO LOS SERVICIOS DEL INDEPENDIENTE */
-        return response()->json(
-                [
-                    "comments"      => $comments,
-                    "independent"   => $independent,
-                    "services"      => $services,
-                    "code"          => 1
-                ],
-                200
-                );
-            
     }
 }
