@@ -185,7 +185,7 @@ class LoungeServiceController extends Controller
     {
 
         $salones = DB::table('lounges_services')
-            ->select('lounges_services.id', 'lounge_id', 'lounges.nombre as nombre_salon', 'lounges.descripcion as descripcion_salon', 'lounges_services.descripcion as descripcion_servicio', 'users.name as nombre_usuario', 'service_id', 'lounges_services.precio', 'lounges_services.foto', 'lounges.created_at', 'lounges.updated_at', 'services.nombre as nombre_servicio', 'lounges.latitud', 'lounges.longitud as altitud')
+            ->select('lounges_services.id', 'lounge_id', 'lounges.nombre as nombre_salon', 'lounges.descripcion as descripcion_salon', 'lounges_services.descripcion as descripcion_servicio', 'users.name as nombre_usuario', 'users.id as id_usuario' , 'service_id', 'lounges_services.precio', 'lounges_services.foto', 'lounges.created_at', 'lounges.updated_at', 'services.nombre as nombre_servicio', 'lounges.latitud', 'lounges.longitud as altitud')
             ->join('lounges', 'lounges_services.lounge_id', '=', 'lounges.id')
             ->join('services', 'lounges_services.service_id', '=', 'services.id')
             ->join('users', 'lounges.user_id', '=', 'users.id')

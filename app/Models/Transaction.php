@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Score;
+use App\Models\TransactionDetail;
 
 class Transaction extends Model
 {
-	protected $fillable = ['monto', 'estado', 'user_id', 'user_to_id','combo_lounge_id'];
+	protected $fillable = ['total', 'comision', 'valor', 'estado', 'user_id', 'user_to_id'];
 
 	public function user()
 	{
@@ -24,4 +25,8 @@ class Transaction extends Model
 	{
 		return $this->hasOne(Score::class);
 	}
+
+	public function details(){
+    	return $this->hasMany(TransactionDetail::class);
+    }
 }

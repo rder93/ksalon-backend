@@ -169,7 +169,7 @@ class IndependentServiceController extends Controller
     public function buscarIndependentsServices(Request $request)
     {
         $salones = DB::table('independents_services')
-            ->select('independents_services.id', 'user_id', 'users.name as nombre_salon', 'users.name as nombre_usuario', 'independents_services.service_id', 'independents_services.precio', 'independents_services.descripcion as descripcion_servicio', 'independents_services.foto', 'independents_services.created_at', 'independents_services.updated_at', 'services.nombre as nombre_servicio', 'users.latitud', 'users.longitud as altitud')
+            ->select('independents_services.id', 'user_id', 'users.name as nombre_salon','user_id as id_usuario', 'users.name as nombre_usuario', 'independents_services.service_id', 'independents_services.precio', 'independents_services.descripcion as descripcion_servicio', 'independents_services.foto', 'independents_services.created_at', 'independents_services.updated_at', 'services.nombre as nombre_servicio', 'users.latitud', 'users.longitud as altitud')
             ->join('services', 'independents_services.service_id', '=', 'services.id')
             ->join('users', 'independents_services.user_id', '=', 'users.id')
             ->whereIn('service_id', $request->servicios)

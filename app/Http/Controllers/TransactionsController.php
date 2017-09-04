@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Transaction;
 use App\Models\Score;
+use App\Models\TransactionDetail;
 
 class TransactionsController extends Controller
 {
@@ -103,7 +104,36 @@ class TransactionsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $input=$request->all();
+        // dd($input);
+        try{
+            // dd($input[0]);
+            $transaction = Transaction::create(
+                $input[0]
+            );
+            // dd($transaction['id']);
+            foreach ($input[1] as $detail) {
+                $detail['transaction_id']=$transaction['id'];
+                $detailTransaction = TransactionDetail::create(
+                    $detail
+                );
+            }
+            return response()->json(
+                [
+                    'msj'=>'Se han pedido los servicios de forma correcta.',
+                    'transaction' => $transaction,
+                    'code' => 1
+                ]
+            );
+        } catch (Exception $e) {
+            return response()->json(
+                [
+                    'msj'=>'Error al pedir los servicios.',
+                    'transaction' => $transactions,
+                    'code' => 0
+                ]
+            );
+        }
     }
 
     /**
@@ -130,7 +160,7 @@ class TransactionsController extends Controller
                 $t->seller_review->user = User::find($t->user_to_id);
             if($t->buyer_review)
                 $t->buyer_review->user = User::find($t->user_id);
-
+            $t['detalleFactura'] = TransactionDetail::where('transaction_id', '=', $id)->get();
             return response()->json([
                 'success' => true,
                 't' => $t
