@@ -10,6 +10,7 @@ use App\Models\Ticket;
 
 use App\Models\User;
 
+use Mail;
 use Validator;
 
 class TicketsController extends Controller
@@ -75,7 +76,7 @@ class TicketsController extends Controller
 
         if($user){
 
-            $tickets = Ticket::where('owner_id',$user->id);
+            $tickets = Ticket::where('user_id',$user->id);
 
             if(count($tickets)>0){
                 foreach($tickets as $t){
@@ -200,11 +201,37 @@ class TicketsController extends Controller
                     $ticket->status         = 0;
 
                 if($ticket->save()){
+
+                    // $user = User::find($ticket->user_id);
+
+                    // $request->username = $user->name;
+                    // $request->surname  = $user->surname;
+
+                    // $data = $request->all();
+                    // $from = 'jonathancuotto@gmail.com';
+                    // $to   = 'jonathancuotto@gmail.com';
+
+
+                    //     if(Mail::send('mails.ticket_mail', $data, 
+                    //         function ($m) use ($data,$from,$to,$user) {
+                    //             $m->from($from, 'Ksalon App.');
+                    //             $m->to($to, 'Ksalon App.')->subject('Nuevo ticket de soporte de '.$user->name.' '.$user->surname.'!');
+                    //     }))
+
+
                     return response()->json([
                         'success'   => true,
                         'msj'       => 'Ticket enviado',
                         'type'      => 2
                     ]);
+
+
+
+                    return response()->json([
+                            'success'   => true,
+                            'msj'       => 'Ticket enviado',
+                            'type'      => 2
+                        ]);
                 }    
                 
 
@@ -228,6 +255,34 @@ class TicketsController extends Controller
                         $thread->save();
                     }
 
+
+
+                    $ticket->user     = User::find($ticket->owner_id);
+                    $ticket->original = Ticket::find($ticket_id);
+
+
+                    // $data = $ticket;
+                    // $data = array( 'ticket' => $ticket );
+
+
+                    // $from = 'jonathancuotto@gmail.com';
+                    // $to   = 'jonathancuotto@gmail.com';
+
+
+                    //     if(Mail::send('mails.ticket_admin_mail', $data, 
+                    //         function ($m) use ($data,$from,$to) {
+                    //             $m->from($from, 'Ksalon App');
+                    //             $m->to($to, 'Ksalon App.')->subject('Han respondido su ticket!');
+                    //     }))
+
+
+                    return response()->json([
+                        'success'   => true,
+                        'msj'       => 'Respuesta enviada',
+                        'type'      => 1
+                    ]);
+                
+
                     return response()->json([
                         'success'   => true,
                         'msj'       => 'Respuesta enviada',
@@ -239,6 +294,8 @@ class TicketsController extends Controller
             }
 
         }
+
+
     }
 
     /**

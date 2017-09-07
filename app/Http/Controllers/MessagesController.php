@@ -14,6 +14,8 @@ use App\Models\Transaction;
 
 use Validator;
 
+use Mail;
+
 
 class MessagesController extends Controller
 {
@@ -77,6 +79,7 @@ class MessagesController extends Controller
 
     public function conversation($user_id, $user_to_id, $transaction_id){
 
+        $user = User::find($user_id);
         $user_to = User::find($user_to_id);
 
         if($user_to){
@@ -94,6 +97,7 @@ class MessagesController extends Controller
 
             return response()->json([
                 'success'           => true,
+                'user'              => $user,
                 'user_to'           => $user_to,
                 'messages'          => $messages,
                 'transaction_data'  => $transaction
@@ -189,6 +193,21 @@ class MessagesController extends Controller
 
 
             if($msg->save()){
+
+                // $msg->user   = User::find($msg->user_to_id);
+                // $data        = array( 'msg' => $msg );
+
+                // $from = 'jonathancuotto@gmail.com';
+                // $to   = 'jonathancuotto@gmail.com';
+
+
+                // if(Mail::send('mails.message_mail', $data, 
+                //     function ($m) use ($data,$from,$to) {
+                //         $m->from($from, 'Ksalon App');
+                //         $m->to($to, 'Ksalon App.')->subject('Nuevo mensaje!');
+                // }))
+
+
                 return response()->json([
                     'success'   => true,
                     'msj'       => 'Mensaje Enviado',
@@ -205,6 +224,19 @@ class MessagesController extends Controller
 
         }
         
+        if( !empty($msg) ){
+            return response()->json([
+                    'success'   => true,
+                    'msj'       => 'Mensaje Enviado',
+                    'route'     => 'message',
+                    'message'    => $message
+                ]);
+        }else{
+            return response()->json([
+                    'success' => false,
+                    'msj'     => 'Error al enviar mensaje'
+                ]);
+        }
 
     }
 }
